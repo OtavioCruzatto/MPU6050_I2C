@@ -93,3 +93,41 @@ static const Mpu6050Reg mpu6050Reg =
 	.fifoRW			 = 0x74,
 	.whoAmI			 = 0x75
 };
+
+CommStatus mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+{
+	CommStatus communicationStatus = NOK;
+
+	mpu6050Device->address	= 0x68 << 1;
+	mpu6050Device->whoAmI	= 0x68;
+
+	if (mpu6050CheckCommunication(hi2c, mpu6050Device) == NOK)
+	{
+		return NOK;
+	}
+
+	if (mpu6050WhoAmI(hi2c, mpu6050Device) == mpu6050Device->whoAmI)
+	{
+		communicationStatus = OK;
+	}
+
+	return communicationStatus;
+}
+
+CommStatus mpu6050CheckCommunication(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+{
+	CommStatus communicationStatus = NOK;
+	uint32_t ui32CommunicationTrials = 5;
+	if (HAL_I2C_IsDeviceReady(hi2c, mpu6050Device->address, ui32CommunicationTrials, timeoutI2C) == HAL_OK)
+	{
+		communicationStatus = OK;
+	}
+	return communicationStatus;
+}
+
+uint8_t mpu6050WhoAmI(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+{
+	uint8_t id = 0;
+	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.whoAmI, sizeof(mpu6050Reg.whoAmI), &id, sizeof(id), timeoutI2C);
+	return id;
+}

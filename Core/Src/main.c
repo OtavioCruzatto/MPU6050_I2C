@@ -21,6 +21,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "mpu6050.h"
+#include <stdio.h>
+#include <string.h>
+#include <inttypes.h>
 
 /* USER CODE END Includes */
 
@@ -40,10 +44,19 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
-
+TIM_HandleTypeDef htim9;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+Mpu6050DeviceData mpu6050Device;
+CommStatus mpu6050CommStatus = NOK;
+char message[40] = "";
+uint8_t counterTimer1 = 0;
+uint8_t counterTimer2 = 0;
+
+const uint32_t timeoutUart = 100;
+const uint8_t delay2s = 200;
+const uint8_t delay100ms = 10;
 
 /* USER CODE END PV */
 
@@ -52,12 +65,25 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_TIM9_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+/*
+ * Timer interrupt handling (10ms)
+ */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	if (htim == &htim9)
+	{
+		counterTimer1++;
+		//counterTimer2++;
+	}
+}
 
 /* USER CODE END 0 */
 
@@ -91,7 +117,11 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   MX_USART2_UART_Init();
+  MX_TIM9_Init();
   /* USER CODE BEGIN 2 */
+
+  mpu6050CommStatus = mpu6050Init(&hi2c1, &mpu6050Device);
+  HAL_TIM_Base_Start_IT(&htim9);
 
   /* USER CODE END 2 */
 
@@ -102,6 +132,13 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	  if (counterTimer1 >= delay100ms)
+	  {
+		  mpu6050Init(&hi2c1, &mpu6050Device);
+		  counterTimer1 = 0;
+	  }
+
   }
   /* USER CODE END 3 */
 }
@@ -178,6 +215,44 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief TIM9 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM9_Init(void)
+{
+
+  /* USER CODE BEGIN TIM9_Init 0 */
+
+  /* USER CODE END TIM9_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+
+  /* USER CODE BEGIN TIM9_Init 1 */
+
+  /* USER CODE END TIM9_Init 1 */
+  htim9.Instance = TIM9;
+  htim9.Init.Prescaler = 16000-1;
+  htim9.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim9.Init.Period = 10-1;
+  htim9.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim9.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim9) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim9, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM9_Init 2 */
+
+  /* USER CODE END TIM9_Init 2 */
 
 }
 

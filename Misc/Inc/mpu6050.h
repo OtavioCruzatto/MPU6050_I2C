@@ -96,5 +96,20 @@ typedef struct
 	uint8_t whoAmI;
 } Mpu6050Reg;
 
+typedef struct
+{
+	uint8_t address;
+	uint8_t whoAmI;
+} Mpu6050DeviceData;
+
+typedef enum COMM_STATUS
+{
+	NOK			= 0x00,
+	OK			= 0x01
+} CommStatus;
+
+CommStatus mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
+CommStatus mpu6050CheckCommunication(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
+uint8_t mpu6050WhoAmI(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
 
 #endif /* INC_MPU6050_H_ */
