@@ -1,3 +1,4 @@
-../Misc/Src/mpu6050.c:97:12:mpu6050Init	24	static
-../Misc/Src/mpu6050.c:117:12:mpu6050CheckCommunication	24	static
-../Misc/Src/mpu6050.c:128:9:mpu6050WhoAmI	40	static
+../Misc/Src/mpu6050.c:95:12:mpu6050Init	24	static
+../Misc/Src/mpu6050.c:122:12:mpu6050CheckCommunication	24	static
+../Misc/Src/mpu6050.c:133:9:mpu6050WhoAmI	40	static
+../Misc/Src/mpu6050.c:140:6:mpu6050GetAccelAndGyroSelfTestParams	40	static

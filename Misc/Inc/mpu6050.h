@@ -12,9 +12,7 @@
 
 typedef struct
 {
-	uint8_t selfTestX;
-	uint8_t selfTestY;
-	uint8_t selfTestZ;
+	uint8_t selfTestXYZ;
 	uint8_t selfTestA;
 	uint8_t smplrtDiv;
 	uint8_t config;
@@ -100,6 +98,8 @@ typedef struct
 {
 	uint8_t address;
 	uint8_t whoAmI;
+	uint8_t accelTest[3];
+	uint8_t gyroTest[3];
 } Mpu6050DeviceData;
 
 typedef enum COMM_STATUS
@@ -108,8 +108,16 @@ typedef enum COMM_STATUS
 	OK			= 0x01
 } CommStatus;
 
+typedef enum AXIS
+{
+	X_AXIS = 0,
+	Y_AXIS,
+	Z_AXIS
+} Axis;
+
 CommStatus mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
 CommStatus mpu6050CheckCommunication(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
 uint8_t mpu6050WhoAmI(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
+void mpu6050GetAccelAndGyroSelfTestParams(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
 
 #endif /* INC_MPU6050_H_ */

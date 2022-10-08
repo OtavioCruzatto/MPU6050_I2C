@@ -10,9 +10,7 @@
 static const uint32_t timeoutI2C = 100;
 static const Mpu6050Reg mpu6050Reg =
 {
-	.selfTestX 		 = 0x0D,
-	.selfTestY 		 = 0x0E,
-	.selfTestZ 		 = 0x0F,
+	.selfTestXYZ	 = 0x0D,
 	.selfTestA 		 = 0x10,
 	.smplrtDiv 		 = 0x19,
 	.config 		 = 0x1A,
@@ -98,8 +96,15 @@ CommStatus mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device
 {
 	CommStatus communicationStatus = NOK;
 
-	mpu6050Device->address	= 0x68 << 1;
-	mpu6050Device->whoAmI	= 0x68;
+	mpu6050Device->address		= 0x68 << 1;
+	mpu6050Device->whoAmI		= 0x68;
+
+	uint8_t cont = 0;
+	for (cont = 0; cont < 3; cont++)
+	{
+		mpu6050Device->accelTest[cont] = 0x00;
+		mpu6050Device->gyroTest[cont] = 0x00;
+	}
 
 	if (mpu6050CheckCommunication(hi2c, mpu6050Device) == NOK)
 	{
@@ -117,8 +122,8 @@ CommStatus mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device
 CommStatus mpu6050CheckCommunication(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 {
 	CommStatus communicationStatus = NOK;
-	uint32_t ui32CommunicationTrials = 5;
-	if (HAL_I2C_IsDeviceReady(hi2c, mpu6050Device->address, ui32CommunicationTrials, timeoutI2C) == HAL_OK)
+	uint32_t communicationTrials = 5;
+	if (HAL_I2C_IsDeviceReady(hi2c, mpu6050Device->address, communicationTrials, timeoutI2C) == HAL_OK)
 	{
 		communicationStatus = OK;
 	}
@@ -130,4 +135,20 @@ uint8_t mpu6050WhoAmI(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 	uint8_t id = 0;
 	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.whoAmI, sizeof(mpu6050Reg.whoAmI), &id, sizeof(id), timeoutI2C);
 	return id;
+}
+
+void mpu6050GetAccelAndGyroSelfTestParams(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+{
+	uint8_t selfTestBytes[3] = {0, 0, 0};
+	uint8_t qtyBytes = 3;
+
+	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.selfTestXYZ, sizeof(mpu6050Reg.selfTestXYZ), selfTestBytes, qtyBytes, timeoutI2C);
+
+	mpu6050Device->gyroTest[X_AXIS] = selfTestBytes[X_AXIS] & 0x1F;
+	mpu6050Device->gyroTest[Y_AXIS] = selfTestBytes[Y_AXIS] & 0x1F;
+	mpu6050Device->gyroTest[Z_AXIS] = selfTestBytes[Z_AXIS] & 0x1F;
+
+	mpu6050Device->accelTest[X_AXIS] = (selfTestBytes[X_AXIS] & 0xE0) >> 5;
+	mpu6050Device->accelTest[Y_AXIS] = (selfTestBytes[Y_AXIS] & 0xE0) >> 5;
+	mpu6050Device->accelTest[Z_AXIS] = (selfTestBytes[Z_AXIS] & 0xE0) >> 5;
 }

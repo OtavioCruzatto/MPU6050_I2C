@@ -135,7 +135,14 @@ int main(void)
 
 	  if (counterTimer1 >= delay100ms)
 	  {
-		  mpu6050Init(&hi2c1, &mpu6050Device);
+		  if (mpu6050CommStatus == OK)
+		  {
+			  mpu6050GetAccelAndGyroSelfTestParams(&hi2c1, &mpu6050Device);
+		  }
+		  else
+		  {
+			  mpu6050CommStatus = mpu6050Init(&hi2c1, &mpu6050Device);
+		  }
 		  counterTimer1 = 0;
 	  }
 
