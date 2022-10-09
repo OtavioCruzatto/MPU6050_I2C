@@ -13,7 +13,6 @@
 typedef struct
 {
 	uint8_t selfTestXYZ;
-	uint8_t selfTestA;
 	uint8_t smplrtDiv;
 	uint8_t config;
 	uint8_t gyroConfig;
@@ -102,22 +101,59 @@ typedef struct
 	uint8_t gyroTest[3];
 } Mpu6050DeviceData;
 
-typedef enum COMM_STATUS
+typedef enum STATUS
 {
-	NOK			= 0x00,
-	OK			= 0x01
-} CommStatus;
+	NOK	= 0x00,
+	OK
+} Status;
 
 typedef enum AXIS
 {
-	X_AXIS = 0,
+	X_AXIS = 0x00,
 	Y_AXIS,
-	Z_AXIS
+	Z_AXIS,
+	XYZ_AXIS
 } Axis;
 
-CommStatus mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
-CommStatus mpu6050CheckCommunication(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
+typedef enum EXT_SYNC_SET
+{
+	DISABLED	= 0x00,
+	TEMP_OUT_L_BIT0,
+	GYRO_XOUT_L_BIT0,
+	GYRO_YOUT_L_BIT0,
+	GYRO_ZOUT_L_BIT0,
+	ACCEL_XOUT_L_BIT0,
+	ACCEL_YOUT_L_BIT0,
+	ACCEL_ZOUT_L_BIT0
+} ExternalSyncSet;
+
+typedef enum DIGITAL_LPF
+{
+	DLPF_ACCEL_1KHZ_260HZ_GYRO_8KHZ_256HZ	= 0x00,
+	DLPF_ACCEL_1KHZ_184HZ_GYRO_1KHZ_188HZ,
+	DLPF_ACCEL_1KHZ_94HZ_GYRO_1KHZ_98HZ,
+	DLPF_ACCEL_1KHZ_44HZ_GYRO_1KHZ_42HZ,
+	DLPF_ACCEL_1KHZ_21HZ_GYRO_1KHZ_20HZ,
+	DLPF_ACCEL_1KHZ_10HZ_GYRO_1KHZ_10HZ,
+	DLPF_ACCEL_1KHZ_5HZ_GYRO_1KHZ_5HZ,
+	DLPF_ACCEL_1KHZ_RES_GYRO_8KHZ_RES
+} DigitalLowPassFilter;
+
+typedef enum POWER_MODE
+{
+	NORMAL	= 0x00,
+	SLEEP
+} PowerMode;
+
+Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
+Status mpu6050CheckCommunication(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
 uint8_t mpu6050WhoAmI(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
 void mpu6050GetAccelAndGyroSelfTestParams(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
+Status mpu6050SetConfig(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device, ExternalSyncSet externalSyncSet, DigitalLowPassFilter digitalLowPassFilter);
+uint8_t mpu6050GetConfig(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
+Status mpu6050SetPwrMode(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device, PowerMode powerMode);
+uint8_t mpu6050GetPwrMode(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
+
+
 
 #endif /* INC_MPU6050_H_ */

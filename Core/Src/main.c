@@ -49,7 +49,7 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 Mpu6050DeviceData mpu6050Device;
-CommStatus mpu6050CommStatus = NOK;
+Status mpu6050CommStatus = NOK;
 char message[40] = "";
 uint8_t counterTimer1 = 0;
 uint8_t counterTimer2 = 0;
@@ -57,6 +57,7 @@ uint8_t counterTimer2 = 0;
 const uint32_t timeoutUart = 100;
 const uint8_t delay2s = 200;
 const uint8_t delay100ms = 10;
+const uint8_t delay500ms = 50;
 
 /* USER CODE END PV */
 
@@ -133,14 +134,15 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  if (counterTimer1 >= delay100ms)
+	  if (counterTimer1 >= delay500ms)
 	  {
 		  if (mpu6050CommStatus == OK)
 		  {
-			  mpu6050GetAccelAndGyroSelfTestParams(&hi2c1, &mpu6050Device);
+			  HAL_UART_Transmit(&huart2, "OK\n\r", 5, timeoutUart);
 		  }
 		  else
 		  {
+			  HAL_UART_Transmit(&huart2, "NOK\n\r", 6, timeoutUart);
 			  mpu6050CommStatus = mpu6050Init(&hi2c1, &mpu6050Device);
 		  }
 		  counterTimer1 = 0;
@@ -207,7 +209,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 400000;
+  hi2c1.Init.ClockSpeed = 100000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
