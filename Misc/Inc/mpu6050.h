@@ -95,6 +95,7 @@ typedef struct
 
 typedef struct
 {
+	I2C_HandleTypeDef *i2cHandler;
 	uint8_t address;
 	uint8_t whoAmI;
 	uint8_t accelTest[3];
@@ -146,13 +147,13 @@ typedef enum POWER_MODE
 } PowerMode;
 
 Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
-Status mpu6050CheckCommunication(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
-uint8_t mpu6050WhoAmI(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
-void mpu6050GetAccelAndGyroSelfTestParams(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
-Status mpu6050SetConfig(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device, ExternalSyncSet externalSyncSet, DigitalLowPassFilter digitalLowPassFilter);
-uint8_t mpu6050GetConfig(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
-Status mpu6050SetPwrMode(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device, PowerMode powerMode);
-uint8_t mpu6050GetPwrMode(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
+Status mpu6050CheckCommunication(Mpu6050DeviceData *mpu6050Device);
+uint8_t mpu6050WhoAmI(Mpu6050DeviceData *mpu6050Device);
+void mpu6050GetAccelAndGyroSelfTestParams(Mpu6050DeviceData *mpu6050Device);
+Status mpu6050SetConfig(Mpu6050DeviceData *mpu6050Device, ExternalSyncSet externalSyncSet, DigitalLowPassFilter digitalLowPassFilter);
+uint8_t mpu6050GetConfig(Mpu6050DeviceData *mpu6050Device);
+Status mpu6050SetPwrMode(Mpu6050DeviceData *mpu6050Device, PowerMode powerMode);
+uint8_t mpu6050GetPwrMode(Mpu6050DeviceData *mpu6050Device);
 
 
 

@@ -1,8 +1,8 @@
 ../Misc/Src/mpu6050.c:94:8:mpu6050Init	24	static
-../Misc/Src/mpu6050.c:124:8:mpu6050CheckCommunication	24	static
-../Misc/Src/mpu6050.c:135:9:mpu6050WhoAmI	40	static
-../Misc/Src/mpu6050.c:142:6:mpu6050GetAccelAndGyroSelfTestParams	40	static
-../Misc/Src/mpu6050.c:158:9:mpu6050GetConfig	40	static
-../Misc/Src/mpu6050.c:165:8:mpu6050SetConfig	48	static
-../Misc/Src/mpu6050.c:179:9:mpu6050GetPwrMode	40	static
-../Misc/Src/mpu6050.c:186:8:mpu6050SetPwrMode	48	static
+../Misc/Src/mpu6050.c:125:8:mpu6050CheckCommunication	24	static
+../Misc/Src/mpu6050.c:136:9:mpu6050WhoAmI	40	static
+../Misc/Src/mpu6050.c:143:6:mpu6050GetAccelAndGyroSelfTestParams	48	static
+../Misc/Src/mpu6050.c:159:9:mpu6050GetConfig	40	static
+../Misc/Src/mpu6050.c:166:8:mpu6050SetConfig	40	static
+../Misc/Src/mpu6050.c:180:9:mpu6050GetPwrMode	40	static
+../Misc/Src/mpu6050.c:187:8:mpu6050SetPwrMode	40	static

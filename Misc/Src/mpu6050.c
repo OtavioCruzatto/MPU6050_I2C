@@ -95,6 +95,7 @@ Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 {
 	Status communicationStatus = NOK;
 
+	mpu6050Device->i2cHandler	= hi2c;
 	mpu6050Device->address		= 0x68 << 1;
 	mpu6050Device->whoAmI		= 0x68;
 
@@ -105,46 +106,46 @@ Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 		mpu6050Device->gyroTest[cont] = 0x00;
 	}
 
-	if (mpu6050CheckCommunication(hi2c, mpu6050Device) == NOK)
+	if (mpu6050CheckCommunication(mpu6050Device) == NOK)
 	{
 		return NOK;
 	}
 
-	if (mpu6050WhoAmI(hi2c, mpu6050Device) == mpu6050Device->whoAmI)
+	if (mpu6050WhoAmI(mpu6050Device) == mpu6050Device->whoAmI)
 	{
-		mpu6050SetPwrMode(hi2c, mpu6050Device, NORMAL);
-		mpu6050GetAccelAndGyroSelfTestParams(hi2c, mpu6050Device);
-		mpu6050SetConfig(hi2c, mpu6050Device, DISABLED, DLPF_ACCEL_1KHZ_260HZ_GYRO_8KHZ_256HZ);
+		mpu6050SetPwrMode(mpu6050Device, NORMAL);
+		mpu6050GetAccelAndGyroSelfTestParams(mpu6050Device);
+		mpu6050SetConfig(mpu6050Device, DISABLED, DLPF_ACCEL_1KHZ_260HZ_GYRO_8KHZ_256HZ);
 		communicationStatus = OK;
 	}
 
 	return communicationStatus;
 }
 
-Status mpu6050CheckCommunication(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+Status mpu6050CheckCommunication(Mpu6050DeviceData *mpu6050Device)
 {
 	Status communicationStatus = NOK;
 	uint32_t communicationTrials = 5;
-	if (HAL_I2C_IsDeviceReady(hi2c, mpu6050Device->address, communicationTrials, timeoutI2C) == HAL_OK)
+	if (HAL_I2C_IsDeviceReady(mpu6050Device->i2cHandler, mpu6050Device->address, communicationTrials, timeoutI2C) == HAL_OK)
 	{
 		communicationStatus = OK;
 	}
 	return communicationStatus;
 }
 
-uint8_t mpu6050WhoAmI(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+uint8_t mpu6050WhoAmI(Mpu6050DeviceData *mpu6050Device)
 {
 	uint8_t id = 0;
-	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.whoAmI, sizeof(mpu6050Reg.whoAmI), &id, sizeof(id), timeoutI2C);
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.whoAmI, sizeof(mpu6050Reg.whoAmI), &id, sizeof(id), timeoutI2C);
 	return id;
 }
 
-void mpu6050GetAccelAndGyroSelfTestParams(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+void mpu6050GetAccelAndGyroSelfTestParams(Mpu6050DeviceData *mpu6050Device)
 {
 	uint8_t qtyBytes = 4;
 	uint8_t selfTestBytes[4] = {0, 0, 0, 0};
 
-	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.selfTestXYZ, sizeof(mpu6050Reg.selfTestXYZ), selfTestBytes, qtyBytes, timeoutI2C);
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.selfTestXYZ, sizeof(mpu6050Reg.selfTestXYZ), selfTestBytes, qtyBytes, timeoutI2C);
 
 	mpu6050Device->gyroTest[X_AXIS] = selfTestBytes[X_AXIS] & 0x1F;
 	mpu6050Device->gyroTest[Y_AXIS] = selfTestBytes[Y_AXIS] & 0x1F;
@@ -155,20 +156,20 @@ void mpu6050GetAccelAndGyroSelfTestParams(I2C_HandleTypeDef *hi2c, Mpu6050Device
 	mpu6050Device->accelTest[Z_AXIS] = ((selfTestBytes[Z_AXIS] & 0xE0) >> 3) | (selfTestBytes[XYZ_AXIS] & 0x03);
 }
 
-uint8_t mpu6050GetConfig(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+uint8_t mpu6050GetConfig(Mpu6050DeviceData *mpu6050Device)
 {
 	uint8_t config = 0;
-	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.config, sizeof(mpu6050Reg.config), &config, 1, timeoutI2C);
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.config, sizeof(mpu6050Reg.config), &config, 1, timeoutI2C);
 	return config;
 }
 
-Status mpu6050SetConfig(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device, ExternalSyncSet externalSyncSet, DigitalLowPassFilter digitalLowPassFilter)
+Status mpu6050SetConfig(Mpu6050DeviceData *mpu6050Device, ExternalSyncSet externalSyncSet, DigitalLowPassFilter digitalLowPassFilter)
 {
 	uint8_t config = (externalSyncSet << 3) | digitalLowPassFilter;
 
-	HAL_I2C_Mem_Write(hi2c, mpu6050Device->address, mpu6050Reg.config, sizeof(mpu6050Reg.config), &config, sizeof(config), timeoutI2C);
+	HAL_I2C_Mem_Write(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.config, sizeof(mpu6050Reg.config), &config, sizeof(config), timeoutI2C);
 
-	if (mpu6050GetConfig(hi2c, mpu6050Device) != config)
+	if (mpu6050GetConfig(mpu6050Device) != config)
 	{
 		return NOK;
 	}
@@ -176,29 +177,29 @@ Status mpu6050SetConfig(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Devic
 	return OK;
 }
 
-uint8_t mpu6050GetPwrMode(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+uint8_t mpu6050GetPwrMode(Mpu6050DeviceData *mpu6050Device)
 {
 	uint8_t pwrMode = 0;
-	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.pwrMgmt1, sizeof(mpu6050Reg.pwrMgmt1), &pwrMode, sizeof(pwrMode), timeoutI2C);
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.pwrMgmt1, sizeof(mpu6050Reg.pwrMgmt1), &pwrMode, sizeof(pwrMode), timeoutI2C);
 	return pwrMode;
 }
 
-Status mpu6050SetPwrMode(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device, PowerMode powerMode)
+Status mpu6050SetPwrMode(Mpu6050DeviceData *mpu6050Device, PowerMode powerMode)
 {
 	uint8_t pwrMode = 0xFF;
 
 	if (powerMode == NORMAL)
 	{
-		pwrMode = mpu6050GetPwrMode(hi2c, mpu6050Device) & 0xBF;
+		pwrMode = mpu6050GetPwrMode(mpu6050Device) & 0xBF;
 	}
 	else if (powerMode == SLEEP)
 	{
-		pwrMode = mpu6050GetPwrMode(hi2c, mpu6050Device) | 0x40;
+		pwrMode = mpu6050GetPwrMode(mpu6050Device) | 0x40;
 	}
 
-	HAL_I2C_Mem_Write(hi2c, mpu6050Device->address, mpu6050Reg.pwrMgmt1, sizeof(mpu6050Reg.pwrMgmt1), &pwrMode, sizeof(pwrMode), timeoutI2C);
+	HAL_I2C_Mem_Write(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.pwrMgmt1, sizeof(mpu6050Reg.pwrMgmt1), &pwrMode, sizeof(pwrMode), timeoutI2C);
 
-	if (mpu6050GetPwrMode(hi2c, mpu6050Device) != pwrMode)
+	if (mpu6050GetPwrMode(mpu6050Device) != pwrMode)
 	{
 		return NOK;
 	}

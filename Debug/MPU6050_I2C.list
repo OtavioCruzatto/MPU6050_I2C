@@ -5,45 +5,45 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .isr_vector   000001c4  08000000  08000000  00010000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .text         00003ee0  080001c4  080001c4  000101c4  2**2
+  1 .text         00003ed0  080001c4  080001c4  000101c4  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000028  080040a4  080040a4  000140a4  2**2
+  2 .rodata       00000028  08004094  08004094  00014094  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  080040cc  080040cc  0002000c  2**0
+  3 .ARM.extab    00000000  080040bc  080040bc  0002000c  2**0
                   CONTENTS
-  4 .ARM          00000008  080040cc  080040cc  000140cc  2**2
+  4 .ARM          00000008  080040bc  080040bc  000140bc  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  080040d4  080040d4  0002000c  2**0
+  5 .preinit_array 00000000  080040c4  080040c4  0002000c  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  080040d4  080040d4  000140d4  2**2
+  6 .init_array   00000004  080040c4  080040c4  000140c4  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .fini_array   00000004  080040d8  080040d8  000140d8  2**2
+  7 .fini_array   00000004  080040c8  080040c8  000140c8  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         0000000c  20000000  080040dc  00020000  2**2
+  8 .data         0000000c  20000000  080040cc  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          0000010c  2000000c  080040e8  0002000c  2**2
+  9 .bss          00000110  2000000c  080040d8  0002000c  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  20000118  080040e8  00020118  2**0
+ 10 ._user_heap_stack 00000604  2000011c  080040d8  0002011c  2**0
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  0002000c  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00010f5b  00000000  00000000  0002003c  2**0
+ 12 .debug_info   00010f0c  00000000  00000000  0002003c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00001ef6  00000000  00000000  00030f97  2**0
+ 13 .debug_abbrev 00001ef6  00000000  00000000  00030f48  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00000ef0  00000000  00000000  00032e90  2**3
+ 14 .debug_aranges 00000ef0  00000000  00000000  00032e40  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_ranges 00000e50  00000000  00000000  00033d80  2**3
+ 15 .debug_ranges 00000e50  00000000  00000000  00033d30  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00022770  00000000  00000000  00034bd0  2**0
+ 16 .debug_macro  00022770  00000000  00000000  00034b80  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0001229f  00000000  00000000  00057340  2**0
+ 17 .debug_line   000122b7  00000000  00000000  000572f0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000d44e0  00000000  00000000  000695df  2**0
+ 18 .debug_str    000d44eb  00000000  00000000  000695a7  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000050  00000000  00000000  0013dabf  2**0
+ 19 .comment      00000050  00000000  00000000  0013da92  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00004034  00000000  00000000  0013db10  2**2
+ 20 .debug_frame  00004034  00000000  00000000  0013dae4  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -62,7 +62,7 @@ Disassembly of section .text:
  80001da:	bd10      	pop	{r4, pc}
  80001dc:	2000000c 	.word	0x2000000c
  80001e0:	00000000 	.word	0x00000000
- 80001e4:	0800408c 	.word	0x0800408c
+ 80001e4:	0800407c 	.word	0x0800407c
 
 080001e8 <frame_dummy>:
  80001e8:	b508      	push	{r3, lr}
@@ -74,7 +74,7 @@ Disassembly of section .text:
  80001f6:	bd08      	pop	{r3, pc}
  80001f8:	00000000 	.word	0x00000000
  80001fc:	20000010 	.word	0x20000010
- 8000200:	0800408c 	.word	0x0800408c
+ 8000200:	0800407c 	.word	0x0800407c
 
 08000204 <__aeabi_uldivmod>:
  8000204:	b953      	cbnz	r3, 800021c <__aeabi_uldivmod+0x18>
@@ -383,7 +383,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  800052a:	f85d 7b04 	ldr.w	r7, [sp], #4
  800052e:	4770      	bx	lr
  8000530:	2000007c 	.word	0x2000007c
- 8000534:	20000111 	.word	0x20000111
+ 8000534:	20000115 	.word	0x20000115
 
 08000538 <main>:
 /**
@@ -486,12 +486,12 @@ int main(void)
  80005ae:	bf00      	nop
  80005b0:	20000108 	.word	0x20000108
  80005b4:	20000028 	.word	0x20000028
- 80005b8:	20000110 	.word	0x20000110
+ 80005b8:	20000114 	.word	0x20000114
  80005bc:	2000007c 	.word	0x2000007c
- 80005c0:	20000111 	.word	0x20000111
- 80005c4:	080040a4 	.word	0x080040a4
+ 80005c0:	20000115 	.word	0x20000115
+ 80005c4:	08004094 	.word	0x08004094
  80005c8:	200000c4 	.word	0x200000c4
- 80005cc:	080040ac 	.word	0x080040ac
+ 80005cc:	0800409c 	.word	0x0800409c
 
 080005d0 <SystemClock_Config>:
 /**
@@ -508,7 +508,7 @@ void SystemClock_Config(void)
  80005da:	2234      	movs	r2, #52	; 0x34
  80005dc:	2100      	movs	r1, #0
  80005de:	4618      	mov	r0, r3
- 80005e0:	f003 fd4c 	bl	800407c <memset>
+ 80005e0:	f003 fd44 	bl	800406c <memset>
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
  80005e4:	f107 0308 	add.w	r3, r7, #8
  80005e8:	2200      	movs	r2, #0
@@ -1501,7 +1501,7 @@ LoopFillZerobss:
  8000a86:	f7ff ffd7 	bl	8000a38 <SystemInit>
 /* Call static constructors */
     bl __libc_init_array
- 8000a8a:	f003 fad3 	bl	8004034 <__libc_init_array>
+ 8000a8a:	f003 facb 	bl	8004024 <__libc_init_array>
 /* Call the application's entry point.*/
   bl  main
  8000a8e:	f7ff fd53 	bl	8000538 <main>
@@ -1514,11 +1514,11 @@ LoopFillZerobss:
   ldr r1, =_edata
  8000a9c:	2000000c 	.word	0x2000000c
   ldr r2, =_sidata
- 8000aa0:	080040dc 	.word	0x080040dc
+ 8000aa0:	080040cc 	.word	0x080040cc
   ldr r2, =_sbss
  8000aa4:	2000000c 	.word	0x2000000c
   ldr r4, =_ebss
- 8000aa8:	20000118 	.word	0x20000118
+ 8000aa8:	2000011c 	.word	0x2000011c
 
 08000aac <ADC_IRQHandler>:
  * @retval None       
@@ -1681,7 +1681,7 @@ __weak void HAL_IncTick(void)
  8000b70:	4770      	bx	lr
  8000b72:	bf00      	nop
  8000b74:	20000008 	.word	0x20000008
- 8000b78:	20000114 	.word	0x20000114
+ 8000b78:	20000118 	.word	0x20000118
 
 08000b7c <HAL_GetTick>:
   * @note This function is declared as __weak to be overwritten in case of other 
@@ -1701,7 +1701,7 @@ __weak uint32_t HAL_GetTick(void)
  8000b88:	f85d 7b04 	ldr.w	r7, [sp], #4
  8000b8c:	4770      	bx	lr
  8000b8e:	bf00      	nop
- 8000b90:	20000114 	.word	0x20000114
+ 8000b90:	20000118 	.word	0x20000118
 
 08000b94 <__NVIC_SetPriorityGrouping>:
            In case of a conflict between priority grouping and available
@@ -5941,7 +5941,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
  8002472:	bf00      	nop
  8002474:	40023c00 	.word	0x40023c00
  8002478:	40023800 	.word	0x40023800
- 800247c:	080040b4 	.word	0x080040b4
+ 800247c:	080040a4 	.word	0x080040a4
  8002480:	20000000 	.word	0x20000000
  8002484:	20000004 	.word	0x20000004
 
@@ -5989,7 +5989,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  80024bc:	4618      	mov	r0, r3
  80024be:	bd80      	pop	{r7, pc}
  80024c0:	40023800 	.word	0x40023800
- 80024c4:	080040c4 	.word	0x080040c4
+ 80024c4:	080040b4 	.word	0x080040b4
 
 080024c8 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -6015,7 +6015,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  80024e4:	4618      	mov	r0, r3
  80024e6:	bd80      	pop	{r7, pc}
  80024e8:	40023800 	.word	0x40023800
- 80024ec:	080040c4 	.word	0x080040c4
+ 80024ec:	080040b4 	.word	0x080040b4
 
 080024f0 <HAL_RCC_GetSysClockFreq>:
   *
@@ -9837,545 +9837,538 @@ Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
  8003d1a:	2300      	movs	r3, #0
  8003d1c:	73fb      	strb	r3, [r7, #15]
 
-	mpu6050Device->address		= 0x68 << 1;
+	mpu6050Device->i2cHandler	= hi2c;
  8003d1e:	683b      	ldr	r3, [r7, #0]
- 8003d20:	22d0      	movs	r2, #208	; 0xd0
- 8003d22:	701a      	strb	r2, [r3, #0]
-	mpu6050Device->whoAmI		= 0x68;
+ 8003d20:	687a      	ldr	r2, [r7, #4]
+ 8003d22:	601a      	str	r2, [r3, #0]
+	mpu6050Device->address		= 0x68 << 1;
  8003d24:	683b      	ldr	r3, [r7, #0]
- 8003d26:	2268      	movs	r2, #104	; 0x68
- 8003d28:	705a      	strb	r2, [r3, #1]
+ 8003d26:	22d0      	movs	r2, #208	; 0xd0
+ 8003d28:	711a      	strb	r2, [r3, #4]
+	mpu6050Device->whoAmI		= 0x68;
+ 8003d2a:	683b      	ldr	r3, [r7, #0]
+ 8003d2c:	2268      	movs	r2, #104	; 0x68
+ 8003d2e:	715a      	strb	r2, [r3, #5]
 
 	uint8_t cont = 0;
- 8003d2a:	2300      	movs	r3, #0
- 8003d2c:	73bb      	strb	r3, [r7, #14]
+ 8003d30:	2300      	movs	r3, #0
+ 8003d32:	73bb      	strb	r3, [r7, #14]
 	for (cont = 0; cont < 3; cont++)
- 8003d2e:	2300      	movs	r3, #0
- 8003d30:	73bb      	strb	r3, [r7, #14]
- 8003d32:	e00c      	b.n	8003d4e <mpu6050Init+0x3e>
+ 8003d34:	2300      	movs	r3, #0
+ 8003d36:	73bb      	strb	r3, [r7, #14]
+ 8003d38:	e00c      	b.n	8003d54 <mpu6050Init+0x44>
 	{
 		mpu6050Device->accelTest[cont] = 0x00;
- 8003d34:	7bbb      	ldrb	r3, [r7, #14]
- 8003d36:	683a      	ldr	r2, [r7, #0]
- 8003d38:	4413      	add	r3, r2
- 8003d3a:	2200      	movs	r2, #0
- 8003d3c:	709a      	strb	r2, [r3, #2]
+ 8003d3a:	7bbb      	ldrb	r3, [r7, #14]
+ 8003d3c:	683a      	ldr	r2, [r7, #0]
+ 8003d3e:	4413      	add	r3, r2
+ 8003d40:	2200      	movs	r2, #0
+ 8003d42:	719a      	strb	r2, [r3, #6]
 		mpu6050Device->gyroTest[cont] = 0x00;
- 8003d3e:	7bbb      	ldrb	r3, [r7, #14]
- 8003d40:	683a      	ldr	r2, [r7, #0]
- 8003d42:	4413      	add	r3, r2
- 8003d44:	2200      	movs	r2, #0
- 8003d46:	715a      	strb	r2, [r3, #5]
+ 8003d44:	7bbb      	ldrb	r3, [r7, #14]
+ 8003d46:	683a      	ldr	r2, [r7, #0]
+ 8003d48:	4413      	add	r3, r2
+ 8003d4a:	2200      	movs	r2, #0
+ 8003d4c:	725a      	strb	r2, [r3, #9]
 	for (cont = 0; cont < 3; cont++)
- 8003d48:	7bbb      	ldrb	r3, [r7, #14]
- 8003d4a:	3301      	adds	r3, #1
- 8003d4c:	73bb      	strb	r3, [r7, #14]
  8003d4e:	7bbb      	ldrb	r3, [r7, #14]
- 8003d50:	2b02      	cmp	r3, #2
- 8003d52:	d9ef      	bls.n	8003d34 <mpu6050Init+0x24>
+ 8003d50:	3301      	adds	r3, #1
+ 8003d52:	73bb      	strb	r3, [r7, #14]
+ 8003d54:	7bbb      	ldrb	r3, [r7, #14]
+ 8003d56:	2b02      	cmp	r3, #2
+ 8003d58:	d9ef      	bls.n	8003d3a <mpu6050Init+0x2a>
 	}
 
-	if (mpu6050CheckCommunication(hi2c, mpu6050Device) == NOK)
- 8003d54:	6839      	ldr	r1, [r7, #0]
- 8003d56:	6878      	ldr	r0, [r7, #4]
- 8003d58:	f000 f825 	bl	8003da6 <mpu6050CheckCommunication>
- 8003d5c:	4603      	mov	r3, r0
- 8003d5e:	2b00      	cmp	r3, #0
- 8003d60:	d101      	bne.n	8003d66 <mpu6050Init+0x56>
+	if (mpu6050CheckCommunication(mpu6050Device) == NOK)
+ 8003d5a:	6838      	ldr	r0, [r7, #0]
+ 8003d5c:	f000 f821 	bl	8003da2 <mpu6050CheckCommunication>
+ 8003d60:	4603      	mov	r3, r0
+ 8003d62:	2b00      	cmp	r3, #0
+ 8003d64:	d101      	bne.n	8003d6a <mpu6050Init+0x5a>
 	{
 		return NOK;
- 8003d62:	2300      	movs	r3, #0
- 8003d64:	e01b      	b.n	8003d9e <mpu6050Init+0x8e>
+ 8003d66:	2300      	movs	r3, #0
+ 8003d68:	e017      	b.n	8003d9a <mpu6050Init+0x8a>
 	}
 
-	if (mpu6050WhoAmI(hi2c, mpu6050Device) == mpu6050Device->whoAmI)
- 8003d66:	6839      	ldr	r1, [r7, #0]
- 8003d68:	6878      	ldr	r0, [r7, #4]
- 8003d6a:	f000 f837 	bl	8003ddc <mpu6050WhoAmI>
- 8003d6e:	4603      	mov	r3, r0
- 8003d70:	461a      	mov	r2, r3
- 8003d72:	683b      	ldr	r3, [r7, #0]
- 8003d74:	785b      	ldrb	r3, [r3, #1]
- 8003d76:	429a      	cmp	r2, r3
- 8003d78:	d110      	bne.n	8003d9c <mpu6050Init+0x8c>
+	if (mpu6050WhoAmI(mpu6050Device) == mpu6050Device->whoAmI)
+ 8003d6a:	6838      	ldr	r0, [r7, #0]
+ 8003d6c:	f000 f834 	bl	8003dd8 <mpu6050WhoAmI>
+ 8003d70:	4603      	mov	r3, r0
+ 8003d72:	461a      	mov	r2, r3
+ 8003d74:	683b      	ldr	r3, [r7, #0]
+ 8003d76:	795b      	ldrb	r3, [r3, #5]
+ 8003d78:	429a      	cmp	r2, r3
+ 8003d7a:	d10d      	bne.n	8003d98 <mpu6050Init+0x88>
 	{
-		mpu6050SetPwrMode(hi2c, mpu6050Device, NORMAL);
- 8003d7a:	2200      	movs	r2, #0
- 8003d7c:	6839      	ldr	r1, [r7, #0]
- 8003d7e:	6878      	ldr	r0, [r7, #4]
- 8003d80:	f000 f916 	bl	8003fb0 <mpu6050SetPwrMode>
-		mpu6050GetAccelAndGyroSelfTestParams(hi2c, mpu6050Device);
- 8003d84:	6839      	ldr	r1, [r7, #0]
- 8003d86:	6878      	ldr	r0, [r7, #4]
- 8003d88:	f000 f844 	bl	8003e14 <mpu6050GetAccelAndGyroSelfTestParams>
-		mpu6050SetConfig(hi2c, mpu6050Device, DISABLED, DLPF_ACCEL_1KHZ_260HZ_GYRO_8KHZ_256HZ);
- 8003d8c:	2300      	movs	r3, #0
- 8003d8e:	2200      	movs	r2, #0
- 8003d90:	6839      	ldr	r1, [r7, #0]
- 8003d92:	6878      	ldr	r0, [r7, #4]
- 8003d94:	f000 f8bc 	bl	8003f10 <mpu6050SetConfig>
+		mpu6050SetPwrMode(mpu6050Device, NORMAL);
+ 8003d7c:	2100      	movs	r1, #0
+ 8003d7e:	6838      	ldr	r0, [r7, #0]
+ 8003d80:	f000 f911 	bl	8003fa6 <mpu6050SetPwrMode>
+		mpu6050GetAccelAndGyroSelfTestParams(mpu6050Device);
+ 8003d84:	6838      	ldr	r0, [r7, #0]
+ 8003d86:	f000 f843 	bl	8003e10 <mpu6050GetAccelAndGyroSelfTestParams>
+		mpu6050SetConfig(mpu6050Device, DISABLED, DLPF_ACCEL_1KHZ_260HZ_GYRO_8KHZ_256HZ);
+ 8003d8a:	2200      	movs	r2, #0
+ 8003d8c:	2100      	movs	r1, #0
+ 8003d8e:	6838      	ldr	r0, [r7, #0]
+ 8003d90:	f000 f8bc 	bl	8003f0c <mpu6050SetConfig>
 		communicationStatus = OK;
- 8003d98:	2301      	movs	r3, #1
- 8003d9a:	73fb      	strb	r3, [r7, #15]
+ 8003d94:	2301      	movs	r3, #1
+ 8003d96:	73fb      	strb	r3, [r7, #15]
 	}
 
 	return communicationStatus;
- 8003d9c:	7bfb      	ldrb	r3, [r7, #15]
+ 8003d98:	7bfb      	ldrb	r3, [r7, #15]
 }
- 8003d9e:	4618      	mov	r0, r3
- 8003da0:	3710      	adds	r7, #16
- 8003da2:	46bd      	mov	sp, r7
- 8003da4:	bd80      	pop	{r7, pc}
+ 8003d9a:	4618      	mov	r0, r3
+ 8003d9c:	3710      	adds	r7, #16
+ 8003d9e:	46bd      	mov	sp, r7
+ 8003da0:	bd80      	pop	{r7, pc}
 
-08003da6 <mpu6050CheckCommunication>:
+08003da2 <mpu6050CheckCommunication>:
 
-Status mpu6050CheckCommunication(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+Status mpu6050CheckCommunication(Mpu6050DeviceData *mpu6050Device)
 {
- 8003da6:	b580      	push	{r7, lr}
- 8003da8:	b084      	sub	sp, #16
- 8003daa:	af00      	add	r7, sp, #0
- 8003dac:	6078      	str	r0, [r7, #4]
- 8003dae:	6039      	str	r1, [r7, #0]
+ 8003da2:	b580      	push	{r7, lr}
+ 8003da4:	b084      	sub	sp, #16
+ 8003da6:	af00      	add	r7, sp, #0
+ 8003da8:	6078      	str	r0, [r7, #4]
 	Status communicationStatus = NOK;
- 8003db0:	2300      	movs	r3, #0
- 8003db2:	73fb      	strb	r3, [r7, #15]
+ 8003daa:	2300      	movs	r3, #0
+ 8003dac:	73fb      	strb	r3, [r7, #15]
 	uint32_t communicationTrials = 5;
- 8003db4:	2305      	movs	r3, #5
- 8003db6:	60bb      	str	r3, [r7, #8]
-	if (HAL_I2C_IsDeviceReady(hi2c, mpu6050Device->address, communicationTrials, timeoutI2C) == HAL_OK)
- 8003db8:	683b      	ldr	r3, [r7, #0]
- 8003dba:	781b      	ldrb	r3, [r3, #0]
- 8003dbc:	b299      	uxth	r1, r3
- 8003dbe:	2364      	movs	r3, #100	; 0x64
- 8003dc0:	68ba      	ldr	r2, [r7, #8]
- 8003dc2:	6878      	ldr	r0, [r7, #4]
- 8003dc4:	f7fd fdf0 	bl	80019a8 <HAL_I2C_IsDeviceReady>
- 8003dc8:	4603      	mov	r3, r0
- 8003dca:	2b00      	cmp	r3, #0
- 8003dcc:	d101      	bne.n	8003dd2 <mpu6050CheckCommunication+0x2c>
+ 8003dae:	2305      	movs	r3, #5
+ 8003db0:	60bb      	str	r3, [r7, #8]
+	if (HAL_I2C_IsDeviceReady(mpu6050Device->i2cHandler, mpu6050Device->address, communicationTrials, timeoutI2C) == HAL_OK)
+ 8003db2:	687b      	ldr	r3, [r7, #4]
+ 8003db4:	6818      	ldr	r0, [r3, #0]
+ 8003db6:	687b      	ldr	r3, [r7, #4]
+ 8003db8:	791b      	ldrb	r3, [r3, #4]
+ 8003dba:	b299      	uxth	r1, r3
+ 8003dbc:	2364      	movs	r3, #100	; 0x64
+ 8003dbe:	68ba      	ldr	r2, [r7, #8]
+ 8003dc0:	f7fd fdf2 	bl	80019a8 <HAL_I2C_IsDeviceReady>
+ 8003dc4:	4603      	mov	r3, r0
+ 8003dc6:	2b00      	cmp	r3, #0
+ 8003dc8:	d101      	bne.n	8003dce <mpu6050CheckCommunication+0x2c>
 	{
 		communicationStatus = OK;
- 8003dce:	2301      	movs	r3, #1
- 8003dd0:	73fb      	strb	r3, [r7, #15]
+ 8003dca:	2301      	movs	r3, #1
+ 8003dcc:	73fb      	strb	r3, [r7, #15]
 	}
 	return communicationStatus;
- 8003dd2:	7bfb      	ldrb	r3, [r7, #15]
+ 8003dce:	7bfb      	ldrb	r3, [r7, #15]
 }
- 8003dd4:	4618      	mov	r0, r3
- 8003dd6:	3710      	adds	r7, #16
- 8003dd8:	46bd      	mov	sp, r7
- 8003dda:	bd80      	pop	{r7, pc}
+ 8003dd0:	4618      	mov	r0, r3
+ 8003dd2:	3710      	adds	r7, #16
+ 8003dd4:	46bd      	mov	sp, r7
+ 8003dd6:	bd80      	pop	{r7, pc}
 
-08003ddc <mpu6050WhoAmI>:
+08003dd8 <mpu6050WhoAmI>:
 
-uint8_t mpu6050WhoAmI(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+uint8_t mpu6050WhoAmI(Mpu6050DeviceData *mpu6050Device)
 {
- 8003ddc:	b580      	push	{r7, lr}
- 8003dde:	b088      	sub	sp, #32
- 8003de0:	af04      	add	r7, sp, #16
- 8003de2:	6078      	str	r0, [r7, #4]
- 8003de4:	6039      	str	r1, [r7, #0]
+ 8003dd8:	b580      	push	{r7, lr}
+ 8003dda:	b088      	sub	sp, #32
+ 8003ddc:	af04      	add	r7, sp, #16
+ 8003dde:	6078      	str	r0, [r7, #4]
 	uint8_t id = 0;
- 8003de6:	2300      	movs	r3, #0
- 8003de8:	73fb      	strb	r3, [r7, #15]
-	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.whoAmI, sizeof(mpu6050Reg.whoAmI), &id, sizeof(id), timeoutI2C);
- 8003dea:	683b      	ldr	r3, [r7, #0]
- 8003dec:	781b      	ldrb	r3, [r3, #0]
- 8003dee:	b299      	uxth	r1, r3
- 8003df0:	2375      	movs	r3, #117	; 0x75
- 8003df2:	b29a      	uxth	r2, r3
- 8003df4:	2364      	movs	r3, #100	; 0x64
- 8003df6:	9302      	str	r3, [sp, #8]
- 8003df8:	2301      	movs	r3, #1
- 8003dfa:	9301      	str	r3, [sp, #4]
- 8003dfc:	f107 030f 	add.w	r3, r7, #15
- 8003e00:	9300      	str	r3, [sp, #0]
- 8003e02:	2301      	movs	r3, #1
- 8003e04:	6878      	ldr	r0, [r7, #4]
- 8003e06:	f7fd fba9 	bl	800155c <HAL_I2C_Mem_Read>
+ 8003de0:	2300      	movs	r3, #0
+ 8003de2:	73fb      	strb	r3, [r7, #15]
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.whoAmI, sizeof(mpu6050Reg.whoAmI), &id, sizeof(id), timeoutI2C);
+ 8003de4:	687b      	ldr	r3, [r7, #4]
+ 8003de6:	6818      	ldr	r0, [r3, #0]
+ 8003de8:	687b      	ldr	r3, [r7, #4]
+ 8003dea:	791b      	ldrb	r3, [r3, #4]
+ 8003dec:	b299      	uxth	r1, r3
+ 8003dee:	2375      	movs	r3, #117	; 0x75
+ 8003df0:	b29a      	uxth	r2, r3
+ 8003df2:	2364      	movs	r3, #100	; 0x64
+ 8003df4:	9302      	str	r3, [sp, #8]
+ 8003df6:	2301      	movs	r3, #1
+ 8003df8:	9301      	str	r3, [sp, #4]
+ 8003dfa:	f107 030f 	add.w	r3, r7, #15
+ 8003dfe:	9300      	str	r3, [sp, #0]
+ 8003e00:	2301      	movs	r3, #1
+ 8003e02:	f7fd fbab 	bl	800155c <HAL_I2C_Mem_Read>
 	return id;
- 8003e0a:	7bfb      	ldrb	r3, [r7, #15]
+ 8003e06:	7bfb      	ldrb	r3, [r7, #15]
 }
- 8003e0c:	4618      	mov	r0, r3
- 8003e0e:	3710      	adds	r7, #16
- 8003e10:	46bd      	mov	sp, r7
- 8003e12:	bd80      	pop	{r7, pc}
+ 8003e08:	4618      	mov	r0, r3
+ 8003e0a:	3710      	adds	r7, #16
+ 8003e0c:	46bd      	mov	sp, r7
+ 8003e0e:	bd80      	pop	{r7, pc}
 
-08003e14 <mpu6050GetAccelAndGyroSelfTestParams>:
+08003e10 <mpu6050GetAccelAndGyroSelfTestParams>:
 
-void mpu6050GetAccelAndGyroSelfTestParams(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+void mpu6050GetAccelAndGyroSelfTestParams(Mpu6050DeviceData *mpu6050Device)
 {
- 8003e14:	b580      	push	{r7, lr}
- 8003e16:	b088      	sub	sp, #32
- 8003e18:	af04      	add	r7, sp, #16
- 8003e1a:	6078      	str	r0, [r7, #4]
- 8003e1c:	6039      	str	r1, [r7, #0]
+ 8003e10:	b590      	push	{r4, r7, lr}
+ 8003e12:	b089      	sub	sp, #36	; 0x24
+ 8003e14:	af04      	add	r7, sp, #16
+ 8003e16:	6078      	str	r0, [r7, #4]
 	uint8_t qtyBytes = 4;
- 8003e1e:	2304      	movs	r3, #4
- 8003e20:	73fb      	strb	r3, [r7, #15]
+ 8003e18:	2304      	movs	r3, #4
+ 8003e1a:	73fb      	strb	r3, [r7, #15]
 	uint8_t selfTestBytes[4] = {0, 0, 0, 0};
- 8003e22:	2300      	movs	r3, #0
- 8003e24:	60bb      	str	r3, [r7, #8]
+ 8003e1c:	2300      	movs	r3, #0
+ 8003e1e:	60bb      	str	r3, [r7, #8]
 
-	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.selfTestXYZ, sizeof(mpu6050Reg.selfTestXYZ), selfTestBytes, qtyBytes, timeoutI2C);
- 8003e26:	683b      	ldr	r3, [r7, #0]
- 8003e28:	781b      	ldrb	r3, [r3, #0]
- 8003e2a:	b299      	uxth	r1, r3
- 8003e2c:	230d      	movs	r3, #13
- 8003e2e:	b29a      	uxth	r2, r3
- 8003e30:	7bfb      	ldrb	r3, [r7, #15]
- 8003e32:	b29b      	uxth	r3, r3
- 8003e34:	2064      	movs	r0, #100	; 0x64
- 8003e36:	9002      	str	r0, [sp, #8]
- 8003e38:	9301      	str	r3, [sp, #4]
- 8003e3a:	f107 0308 	add.w	r3, r7, #8
- 8003e3e:	9300      	str	r3, [sp, #0]
- 8003e40:	2301      	movs	r3, #1
- 8003e42:	6878      	ldr	r0, [r7, #4]
- 8003e44:	f7fd fb8a 	bl	800155c <HAL_I2C_Mem_Read>
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.selfTestXYZ, sizeof(mpu6050Reg.selfTestXYZ), selfTestBytes, qtyBytes, timeoutI2C);
+ 8003e20:	687b      	ldr	r3, [r7, #4]
+ 8003e22:	6818      	ldr	r0, [r3, #0]
+ 8003e24:	687b      	ldr	r3, [r7, #4]
+ 8003e26:	791b      	ldrb	r3, [r3, #4]
+ 8003e28:	b299      	uxth	r1, r3
+ 8003e2a:	230d      	movs	r3, #13
+ 8003e2c:	b29a      	uxth	r2, r3
+ 8003e2e:	7bfb      	ldrb	r3, [r7, #15]
+ 8003e30:	b29b      	uxth	r3, r3
+ 8003e32:	2464      	movs	r4, #100	; 0x64
+ 8003e34:	9402      	str	r4, [sp, #8]
+ 8003e36:	9301      	str	r3, [sp, #4]
+ 8003e38:	f107 0308 	add.w	r3, r7, #8
+ 8003e3c:	9300      	str	r3, [sp, #0]
+ 8003e3e:	2301      	movs	r3, #1
+ 8003e40:	f7fd fb8c 	bl	800155c <HAL_I2C_Mem_Read>
 
 	mpu6050Device->gyroTest[X_AXIS] = selfTestBytes[X_AXIS] & 0x1F;
- 8003e48:	7a3b      	ldrb	r3, [r7, #8]
- 8003e4a:	f003 031f 	and.w	r3, r3, #31
- 8003e4e:	b2da      	uxtb	r2, r3
- 8003e50:	683b      	ldr	r3, [r7, #0]
- 8003e52:	715a      	strb	r2, [r3, #5]
+ 8003e44:	7a3b      	ldrb	r3, [r7, #8]
+ 8003e46:	f003 031f 	and.w	r3, r3, #31
+ 8003e4a:	b2da      	uxtb	r2, r3
+ 8003e4c:	687b      	ldr	r3, [r7, #4]
+ 8003e4e:	725a      	strb	r2, [r3, #9]
 	mpu6050Device->gyroTest[Y_AXIS] = selfTestBytes[Y_AXIS] & 0x1F;
- 8003e54:	7a7b      	ldrb	r3, [r7, #9]
- 8003e56:	f003 031f 	and.w	r3, r3, #31
- 8003e5a:	b2da      	uxtb	r2, r3
- 8003e5c:	683b      	ldr	r3, [r7, #0]
- 8003e5e:	719a      	strb	r2, [r3, #6]
+ 8003e50:	7a7b      	ldrb	r3, [r7, #9]
+ 8003e52:	f003 031f 	and.w	r3, r3, #31
+ 8003e56:	b2da      	uxtb	r2, r3
+ 8003e58:	687b      	ldr	r3, [r7, #4]
+ 8003e5a:	729a      	strb	r2, [r3, #10]
 	mpu6050Device->gyroTest[Z_AXIS] = selfTestBytes[Z_AXIS] & 0x1F;
- 8003e60:	7abb      	ldrb	r3, [r7, #10]
- 8003e62:	f003 031f 	and.w	r3, r3, #31
- 8003e66:	b2da      	uxtb	r2, r3
- 8003e68:	683b      	ldr	r3, [r7, #0]
- 8003e6a:	71da      	strb	r2, [r3, #7]
+ 8003e5c:	7abb      	ldrb	r3, [r7, #10]
+ 8003e5e:	f003 031f 	and.w	r3, r3, #31
+ 8003e62:	b2da      	uxtb	r2, r3
+ 8003e64:	687b      	ldr	r3, [r7, #4]
+ 8003e66:	72da      	strb	r2, [r3, #11]
 
 	mpu6050Device->accelTest[X_AXIS] = ((selfTestBytes[X_AXIS] & 0xE0) >> 3) | ((selfTestBytes[XYZ_AXIS] & 0x30) >> 4);
- 8003e6c:	7a3b      	ldrb	r3, [r7, #8]
- 8003e6e:	10db      	asrs	r3, r3, #3
- 8003e70:	b25b      	sxtb	r3, r3
- 8003e72:	f003 031c 	and.w	r3, r3, #28
- 8003e76:	b25a      	sxtb	r2, r3
- 8003e78:	7afb      	ldrb	r3, [r7, #11]
- 8003e7a:	111b      	asrs	r3, r3, #4
- 8003e7c:	b25b      	sxtb	r3, r3
- 8003e7e:	f003 0303 	and.w	r3, r3, #3
+ 8003e68:	7a3b      	ldrb	r3, [r7, #8]
+ 8003e6a:	10db      	asrs	r3, r3, #3
+ 8003e6c:	b25b      	sxtb	r3, r3
+ 8003e6e:	f003 031c 	and.w	r3, r3, #28
+ 8003e72:	b25a      	sxtb	r2, r3
+ 8003e74:	7afb      	ldrb	r3, [r7, #11]
+ 8003e76:	111b      	asrs	r3, r3, #4
+ 8003e78:	b25b      	sxtb	r3, r3
+ 8003e7a:	f003 0303 	and.w	r3, r3, #3
+ 8003e7e:	b25b      	sxtb	r3, r3
+ 8003e80:	4313      	orrs	r3, r2
  8003e82:	b25b      	sxtb	r3, r3
- 8003e84:	4313      	orrs	r3, r2
- 8003e86:	b25b      	sxtb	r3, r3
- 8003e88:	b2da      	uxtb	r2, r3
- 8003e8a:	683b      	ldr	r3, [r7, #0]
- 8003e8c:	709a      	strb	r2, [r3, #2]
+ 8003e84:	b2da      	uxtb	r2, r3
+ 8003e86:	687b      	ldr	r3, [r7, #4]
+ 8003e88:	719a      	strb	r2, [r3, #6]
 	mpu6050Device->accelTest[Y_AXIS] = ((selfTestBytes[Y_AXIS] & 0xE0) >> 3) | ((selfTestBytes[XYZ_AXIS] & 0x0C) >> 2);
- 8003e8e:	7a7b      	ldrb	r3, [r7, #9]
- 8003e90:	10db      	asrs	r3, r3, #3
- 8003e92:	b25b      	sxtb	r3, r3
- 8003e94:	f003 031c 	and.w	r3, r3, #28
- 8003e98:	b25a      	sxtb	r2, r3
- 8003e9a:	7afb      	ldrb	r3, [r7, #11]
- 8003e9c:	109b      	asrs	r3, r3, #2
- 8003e9e:	b25b      	sxtb	r3, r3
- 8003ea0:	f003 0303 	and.w	r3, r3, #3
+ 8003e8a:	7a7b      	ldrb	r3, [r7, #9]
+ 8003e8c:	10db      	asrs	r3, r3, #3
+ 8003e8e:	b25b      	sxtb	r3, r3
+ 8003e90:	f003 031c 	and.w	r3, r3, #28
+ 8003e94:	b25a      	sxtb	r2, r3
+ 8003e96:	7afb      	ldrb	r3, [r7, #11]
+ 8003e98:	109b      	asrs	r3, r3, #2
+ 8003e9a:	b25b      	sxtb	r3, r3
+ 8003e9c:	f003 0303 	and.w	r3, r3, #3
+ 8003ea0:	b25b      	sxtb	r3, r3
+ 8003ea2:	4313      	orrs	r3, r2
  8003ea4:	b25b      	sxtb	r3, r3
- 8003ea6:	4313      	orrs	r3, r2
- 8003ea8:	b25b      	sxtb	r3, r3
- 8003eaa:	b2da      	uxtb	r2, r3
- 8003eac:	683b      	ldr	r3, [r7, #0]
- 8003eae:	70da      	strb	r2, [r3, #3]
+ 8003ea6:	b2da      	uxtb	r2, r3
+ 8003ea8:	687b      	ldr	r3, [r7, #4]
+ 8003eaa:	71da      	strb	r2, [r3, #7]
 	mpu6050Device->accelTest[Z_AXIS] = ((selfTestBytes[Z_AXIS] & 0xE0) >> 3) | (selfTestBytes[XYZ_AXIS] & 0x03);
- 8003eb0:	7abb      	ldrb	r3, [r7, #10]
- 8003eb2:	10db      	asrs	r3, r3, #3
- 8003eb4:	b25b      	sxtb	r3, r3
- 8003eb6:	f003 031c 	and.w	r3, r3, #28
- 8003eba:	b25a      	sxtb	r2, r3
- 8003ebc:	7afb      	ldrb	r3, [r7, #11]
- 8003ebe:	b25b      	sxtb	r3, r3
- 8003ec0:	f003 0303 	and.w	r3, r3, #3
+ 8003eac:	7abb      	ldrb	r3, [r7, #10]
+ 8003eae:	10db      	asrs	r3, r3, #3
+ 8003eb0:	b25b      	sxtb	r3, r3
+ 8003eb2:	f003 031c 	and.w	r3, r3, #28
+ 8003eb6:	b25a      	sxtb	r2, r3
+ 8003eb8:	7afb      	ldrb	r3, [r7, #11]
+ 8003eba:	b25b      	sxtb	r3, r3
+ 8003ebc:	f003 0303 	and.w	r3, r3, #3
+ 8003ec0:	b25b      	sxtb	r3, r3
+ 8003ec2:	4313      	orrs	r3, r2
  8003ec4:	b25b      	sxtb	r3, r3
- 8003ec6:	4313      	orrs	r3, r2
- 8003ec8:	b25b      	sxtb	r3, r3
- 8003eca:	b2da      	uxtb	r2, r3
- 8003ecc:	683b      	ldr	r3, [r7, #0]
- 8003ece:	711a      	strb	r2, [r3, #4]
+ 8003ec6:	b2da      	uxtb	r2, r3
+ 8003ec8:	687b      	ldr	r3, [r7, #4]
+ 8003eca:	721a      	strb	r2, [r3, #8]
 }
- 8003ed0:	bf00      	nop
- 8003ed2:	3710      	adds	r7, #16
- 8003ed4:	46bd      	mov	sp, r7
- 8003ed6:	bd80      	pop	{r7, pc}
+ 8003ecc:	bf00      	nop
+ 8003ece:	3714      	adds	r7, #20
+ 8003ed0:	46bd      	mov	sp, r7
+ 8003ed2:	bd90      	pop	{r4, r7, pc}
 
-08003ed8 <mpu6050GetConfig>:
+08003ed4 <mpu6050GetConfig>:
 
-uint8_t mpu6050GetConfig(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+uint8_t mpu6050GetConfig(Mpu6050DeviceData *mpu6050Device)
 {
- 8003ed8:	b580      	push	{r7, lr}
- 8003eda:	b088      	sub	sp, #32
- 8003edc:	af04      	add	r7, sp, #16
- 8003ede:	6078      	str	r0, [r7, #4]
- 8003ee0:	6039      	str	r1, [r7, #0]
+ 8003ed4:	b580      	push	{r7, lr}
+ 8003ed6:	b088      	sub	sp, #32
+ 8003ed8:	af04      	add	r7, sp, #16
+ 8003eda:	6078      	str	r0, [r7, #4]
 	uint8_t config = 0;
- 8003ee2:	2300      	movs	r3, #0
- 8003ee4:	73fb      	strb	r3, [r7, #15]
-	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.config, sizeof(mpu6050Reg.config), &config, 1, timeoutI2C);
- 8003ee6:	683b      	ldr	r3, [r7, #0]
- 8003ee8:	781b      	ldrb	r3, [r3, #0]
- 8003eea:	b299      	uxth	r1, r3
- 8003eec:	231a      	movs	r3, #26
- 8003eee:	b29a      	uxth	r2, r3
- 8003ef0:	2364      	movs	r3, #100	; 0x64
- 8003ef2:	9302      	str	r3, [sp, #8]
- 8003ef4:	2301      	movs	r3, #1
- 8003ef6:	9301      	str	r3, [sp, #4]
- 8003ef8:	f107 030f 	add.w	r3, r7, #15
- 8003efc:	9300      	str	r3, [sp, #0]
- 8003efe:	2301      	movs	r3, #1
- 8003f00:	6878      	ldr	r0, [r7, #4]
- 8003f02:	f7fd fb2b 	bl	800155c <HAL_I2C_Mem_Read>
+ 8003edc:	2300      	movs	r3, #0
+ 8003ede:	73fb      	strb	r3, [r7, #15]
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.config, sizeof(mpu6050Reg.config), &config, 1, timeoutI2C);
+ 8003ee0:	687b      	ldr	r3, [r7, #4]
+ 8003ee2:	6818      	ldr	r0, [r3, #0]
+ 8003ee4:	687b      	ldr	r3, [r7, #4]
+ 8003ee6:	791b      	ldrb	r3, [r3, #4]
+ 8003ee8:	b299      	uxth	r1, r3
+ 8003eea:	231a      	movs	r3, #26
+ 8003eec:	b29a      	uxth	r2, r3
+ 8003eee:	2364      	movs	r3, #100	; 0x64
+ 8003ef0:	9302      	str	r3, [sp, #8]
+ 8003ef2:	2301      	movs	r3, #1
+ 8003ef4:	9301      	str	r3, [sp, #4]
+ 8003ef6:	f107 030f 	add.w	r3, r7, #15
+ 8003efa:	9300      	str	r3, [sp, #0]
+ 8003efc:	2301      	movs	r3, #1
+ 8003efe:	f7fd fb2d 	bl	800155c <HAL_I2C_Mem_Read>
 	return config;
- 8003f06:	7bfb      	ldrb	r3, [r7, #15]
+ 8003f02:	7bfb      	ldrb	r3, [r7, #15]
 }
- 8003f08:	4618      	mov	r0, r3
- 8003f0a:	3710      	adds	r7, #16
- 8003f0c:	46bd      	mov	sp, r7
- 8003f0e:	bd80      	pop	{r7, pc}
+ 8003f04:	4618      	mov	r0, r3
+ 8003f06:	3710      	adds	r7, #16
+ 8003f08:	46bd      	mov	sp, r7
+ 8003f0a:	bd80      	pop	{r7, pc}
 
-08003f10 <mpu6050SetConfig>:
+08003f0c <mpu6050SetConfig>:
 
-Status mpu6050SetConfig(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device, ExternalSyncSet externalSyncSet, DigitalLowPassFilter digitalLowPassFilter)
+Status mpu6050SetConfig(Mpu6050DeviceData *mpu6050Device, ExternalSyncSet externalSyncSet, DigitalLowPassFilter digitalLowPassFilter)
 {
- 8003f10:	b580      	push	{r7, lr}
- 8003f12:	b08a      	sub	sp, #40	; 0x28
- 8003f14:	af04      	add	r7, sp, #16
- 8003f16:	60f8      	str	r0, [r7, #12]
- 8003f18:	60b9      	str	r1, [r7, #8]
- 8003f1a:	4611      	mov	r1, r2
- 8003f1c:	461a      	mov	r2, r3
- 8003f1e:	460b      	mov	r3, r1
- 8003f20:	71fb      	strb	r3, [r7, #7]
- 8003f22:	4613      	mov	r3, r2
- 8003f24:	71bb      	strb	r3, [r7, #6]
+ 8003f0c:	b580      	push	{r7, lr}
+ 8003f0e:	b088      	sub	sp, #32
+ 8003f10:	af04      	add	r7, sp, #16
+ 8003f12:	6078      	str	r0, [r7, #4]
+ 8003f14:	460b      	mov	r3, r1
+ 8003f16:	70fb      	strb	r3, [r7, #3]
+ 8003f18:	4613      	mov	r3, r2
+ 8003f1a:	70bb      	strb	r3, [r7, #2]
 	uint8_t config = (externalSyncSet << 3) | digitalLowPassFilter;
- 8003f26:	79fb      	ldrb	r3, [r7, #7]
- 8003f28:	00db      	lsls	r3, r3, #3
- 8003f2a:	b25a      	sxtb	r2, r3
- 8003f2c:	f997 3006 	ldrsb.w	r3, [r7, #6]
- 8003f30:	4313      	orrs	r3, r2
- 8003f32:	b25b      	sxtb	r3, r3
- 8003f34:	b2db      	uxtb	r3, r3
- 8003f36:	75fb      	strb	r3, [r7, #23]
+ 8003f1c:	78fb      	ldrb	r3, [r7, #3]
+ 8003f1e:	00db      	lsls	r3, r3, #3
+ 8003f20:	b25a      	sxtb	r2, r3
+ 8003f22:	f997 3002 	ldrsb.w	r3, [r7, #2]
+ 8003f26:	4313      	orrs	r3, r2
+ 8003f28:	b25b      	sxtb	r3, r3
+ 8003f2a:	b2db      	uxtb	r3, r3
+ 8003f2c:	73fb      	strb	r3, [r7, #15]
 
-	HAL_I2C_Mem_Write(hi2c, mpu6050Device->address, mpu6050Reg.config, sizeof(mpu6050Reg.config), &config, sizeof(config), timeoutI2C);
- 8003f38:	68bb      	ldr	r3, [r7, #8]
- 8003f3a:	781b      	ldrb	r3, [r3, #0]
- 8003f3c:	b299      	uxth	r1, r3
- 8003f3e:	231a      	movs	r3, #26
- 8003f40:	b29a      	uxth	r2, r3
- 8003f42:	2364      	movs	r3, #100	; 0x64
- 8003f44:	9302      	str	r3, [sp, #8]
- 8003f46:	2301      	movs	r3, #1
- 8003f48:	9301      	str	r3, [sp, #4]
- 8003f4a:	f107 0317 	add.w	r3, r7, #23
- 8003f4e:	9300      	str	r3, [sp, #0]
- 8003f50:	2301      	movs	r3, #1
- 8003f52:	68f8      	ldr	r0, [r7, #12]
- 8003f54:	f7fd fa08 	bl	8001368 <HAL_I2C_Mem_Write>
+	HAL_I2C_Mem_Write(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.config, sizeof(mpu6050Reg.config), &config, sizeof(config), timeoutI2C);
+ 8003f2e:	687b      	ldr	r3, [r7, #4]
+ 8003f30:	6818      	ldr	r0, [r3, #0]
+ 8003f32:	687b      	ldr	r3, [r7, #4]
+ 8003f34:	791b      	ldrb	r3, [r3, #4]
+ 8003f36:	b299      	uxth	r1, r3
+ 8003f38:	231a      	movs	r3, #26
+ 8003f3a:	b29a      	uxth	r2, r3
+ 8003f3c:	2364      	movs	r3, #100	; 0x64
+ 8003f3e:	9302      	str	r3, [sp, #8]
+ 8003f40:	2301      	movs	r3, #1
+ 8003f42:	9301      	str	r3, [sp, #4]
+ 8003f44:	f107 030f 	add.w	r3, r7, #15
+ 8003f48:	9300      	str	r3, [sp, #0]
+ 8003f4a:	2301      	movs	r3, #1
+ 8003f4c:	f7fd fa0c 	bl	8001368 <HAL_I2C_Mem_Write>
 
-	if (mpu6050GetConfig(hi2c, mpu6050Device) != config)
- 8003f58:	68b9      	ldr	r1, [r7, #8]
- 8003f5a:	68f8      	ldr	r0, [r7, #12]
- 8003f5c:	f7ff ffbc 	bl	8003ed8 <mpu6050GetConfig>
- 8003f60:	4603      	mov	r3, r0
- 8003f62:	461a      	mov	r2, r3
- 8003f64:	7dfb      	ldrb	r3, [r7, #23]
- 8003f66:	429a      	cmp	r2, r3
- 8003f68:	d001      	beq.n	8003f6e <mpu6050SetConfig+0x5e>
+	if (mpu6050GetConfig(mpu6050Device) != config)
+ 8003f50:	6878      	ldr	r0, [r7, #4]
+ 8003f52:	f7ff ffbf 	bl	8003ed4 <mpu6050GetConfig>
+ 8003f56:	4603      	mov	r3, r0
+ 8003f58:	461a      	mov	r2, r3
+ 8003f5a:	7bfb      	ldrb	r3, [r7, #15]
+ 8003f5c:	429a      	cmp	r2, r3
+ 8003f5e:	d001      	beq.n	8003f64 <mpu6050SetConfig+0x58>
 	{
 		return NOK;
- 8003f6a:	2300      	movs	r3, #0
- 8003f6c:	e000      	b.n	8003f70 <mpu6050SetConfig+0x60>
+ 8003f60:	2300      	movs	r3, #0
+ 8003f62:	e000      	b.n	8003f66 <mpu6050SetConfig+0x5a>
 	}
 
 	return OK;
- 8003f6e:	2301      	movs	r3, #1
+ 8003f64:	2301      	movs	r3, #1
 }
- 8003f70:	4618      	mov	r0, r3
- 8003f72:	3718      	adds	r7, #24
- 8003f74:	46bd      	mov	sp, r7
- 8003f76:	bd80      	pop	{r7, pc}
+ 8003f66:	4618      	mov	r0, r3
+ 8003f68:	3710      	adds	r7, #16
+ 8003f6a:	46bd      	mov	sp, r7
+ 8003f6c:	bd80      	pop	{r7, pc}
 
-08003f78 <mpu6050GetPwrMode>:
+08003f6e <mpu6050GetPwrMode>:
 
-uint8_t mpu6050GetPwrMode(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
+uint8_t mpu6050GetPwrMode(Mpu6050DeviceData *mpu6050Device)
 {
- 8003f78:	b580      	push	{r7, lr}
- 8003f7a:	b088      	sub	sp, #32
- 8003f7c:	af04      	add	r7, sp, #16
- 8003f7e:	6078      	str	r0, [r7, #4]
- 8003f80:	6039      	str	r1, [r7, #0]
+ 8003f6e:	b580      	push	{r7, lr}
+ 8003f70:	b088      	sub	sp, #32
+ 8003f72:	af04      	add	r7, sp, #16
+ 8003f74:	6078      	str	r0, [r7, #4]
 	uint8_t pwrMode = 0;
- 8003f82:	2300      	movs	r3, #0
- 8003f84:	73fb      	strb	r3, [r7, #15]
-	HAL_I2C_Mem_Read(hi2c, mpu6050Device->address, mpu6050Reg.pwrMgmt1, sizeof(mpu6050Reg.pwrMgmt1), &pwrMode, sizeof(pwrMode), timeoutI2C);
- 8003f86:	683b      	ldr	r3, [r7, #0]
- 8003f88:	781b      	ldrb	r3, [r3, #0]
- 8003f8a:	b299      	uxth	r1, r3
- 8003f8c:	236b      	movs	r3, #107	; 0x6b
- 8003f8e:	b29a      	uxth	r2, r3
- 8003f90:	2364      	movs	r3, #100	; 0x64
- 8003f92:	9302      	str	r3, [sp, #8]
- 8003f94:	2301      	movs	r3, #1
- 8003f96:	9301      	str	r3, [sp, #4]
- 8003f98:	f107 030f 	add.w	r3, r7, #15
- 8003f9c:	9300      	str	r3, [sp, #0]
- 8003f9e:	2301      	movs	r3, #1
- 8003fa0:	6878      	ldr	r0, [r7, #4]
- 8003fa2:	f7fd fadb 	bl	800155c <HAL_I2C_Mem_Read>
+ 8003f76:	2300      	movs	r3, #0
+ 8003f78:	73fb      	strb	r3, [r7, #15]
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.pwrMgmt1, sizeof(mpu6050Reg.pwrMgmt1), &pwrMode, sizeof(pwrMode), timeoutI2C);
+ 8003f7a:	687b      	ldr	r3, [r7, #4]
+ 8003f7c:	6818      	ldr	r0, [r3, #0]
+ 8003f7e:	687b      	ldr	r3, [r7, #4]
+ 8003f80:	791b      	ldrb	r3, [r3, #4]
+ 8003f82:	b299      	uxth	r1, r3
+ 8003f84:	236b      	movs	r3, #107	; 0x6b
+ 8003f86:	b29a      	uxth	r2, r3
+ 8003f88:	2364      	movs	r3, #100	; 0x64
+ 8003f8a:	9302      	str	r3, [sp, #8]
+ 8003f8c:	2301      	movs	r3, #1
+ 8003f8e:	9301      	str	r3, [sp, #4]
+ 8003f90:	f107 030f 	add.w	r3, r7, #15
+ 8003f94:	9300      	str	r3, [sp, #0]
+ 8003f96:	2301      	movs	r3, #1
+ 8003f98:	f7fd fae0 	bl	800155c <HAL_I2C_Mem_Read>
 	return pwrMode;
- 8003fa6:	7bfb      	ldrb	r3, [r7, #15]
+ 8003f9c:	7bfb      	ldrb	r3, [r7, #15]
 }
- 8003fa8:	4618      	mov	r0, r3
- 8003faa:	3710      	adds	r7, #16
- 8003fac:	46bd      	mov	sp, r7
- 8003fae:	bd80      	pop	{r7, pc}
+ 8003f9e:	4618      	mov	r0, r3
+ 8003fa0:	3710      	adds	r7, #16
+ 8003fa2:	46bd      	mov	sp, r7
+ 8003fa4:	bd80      	pop	{r7, pc}
 
-08003fb0 <mpu6050SetPwrMode>:
+08003fa6 <mpu6050SetPwrMode>:
 
-Status mpu6050SetPwrMode(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device, PowerMode powerMode)
+Status mpu6050SetPwrMode(Mpu6050DeviceData *mpu6050Device, PowerMode powerMode)
 {
- 8003fb0:	b580      	push	{r7, lr}
- 8003fb2:	b08a      	sub	sp, #40	; 0x28
- 8003fb4:	af04      	add	r7, sp, #16
- 8003fb6:	60f8      	str	r0, [r7, #12]
- 8003fb8:	60b9      	str	r1, [r7, #8]
- 8003fba:	4613      	mov	r3, r2
- 8003fbc:	71fb      	strb	r3, [r7, #7]
+ 8003fa6:	b580      	push	{r7, lr}
+ 8003fa8:	b088      	sub	sp, #32
+ 8003faa:	af04      	add	r7, sp, #16
+ 8003fac:	6078      	str	r0, [r7, #4]
+ 8003fae:	460b      	mov	r3, r1
+ 8003fb0:	70fb      	strb	r3, [r7, #3]
 	uint8_t pwrMode = 0xFF;
- 8003fbe:	23ff      	movs	r3, #255	; 0xff
- 8003fc0:	75fb      	strb	r3, [r7, #23]
+ 8003fb2:	23ff      	movs	r3, #255	; 0xff
+ 8003fb4:	73fb      	strb	r3, [r7, #15]
 
 	if (powerMode == NORMAL)
- 8003fc2:	79fb      	ldrb	r3, [r7, #7]
- 8003fc4:	2b00      	cmp	r3, #0
- 8003fc6:	d109      	bne.n	8003fdc <mpu6050SetPwrMode+0x2c>
+ 8003fb6:	78fb      	ldrb	r3, [r7, #3]
+ 8003fb8:	2b00      	cmp	r3, #0
+ 8003fba:	d108      	bne.n	8003fce <mpu6050SetPwrMode+0x28>
 	{
-		pwrMode = mpu6050GetPwrMode(hi2c, mpu6050Device) & 0xBF;
- 8003fc8:	68b9      	ldr	r1, [r7, #8]
- 8003fca:	68f8      	ldr	r0, [r7, #12]
- 8003fcc:	f7ff ffd4 	bl	8003f78 <mpu6050GetPwrMode>
- 8003fd0:	4603      	mov	r3, r0
- 8003fd2:	f023 0340 	bic.w	r3, r3, #64	; 0x40
- 8003fd6:	b2db      	uxtb	r3, r3
- 8003fd8:	75fb      	strb	r3, [r7, #23]
- 8003fda:	e00b      	b.n	8003ff4 <mpu6050SetPwrMode+0x44>
+		pwrMode = mpu6050GetPwrMode(mpu6050Device) & 0xBF;
+ 8003fbc:	6878      	ldr	r0, [r7, #4]
+ 8003fbe:	f7ff ffd6 	bl	8003f6e <mpu6050GetPwrMode>
+ 8003fc2:	4603      	mov	r3, r0
+ 8003fc4:	f023 0340 	bic.w	r3, r3, #64	; 0x40
+ 8003fc8:	b2db      	uxtb	r3, r3
+ 8003fca:	73fb      	strb	r3, [r7, #15]
+ 8003fcc:	e00a      	b.n	8003fe4 <mpu6050SetPwrMode+0x3e>
 	}
 	else if (powerMode == SLEEP)
- 8003fdc:	79fb      	ldrb	r3, [r7, #7]
- 8003fde:	2b01      	cmp	r3, #1
- 8003fe0:	d108      	bne.n	8003ff4 <mpu6050SetPwrMode+0x44>
+ 8003fce:	78fb      	ldrb	r3, [r7, #3]
+ 8003fd0:	2b01      	cmp	r3, #1
+ 8003fd2:	d107      	bne.n	8003fe4 <mpu6050SetPwrMode+0x3e>
 	{
-		pwrMode = mpu6050GetPwrMode(hi2c, mpu6050Device) | 0x40;
- 8003fe2:	68b9      	ldr	r1, [r7, #8]
- 8003fe4:	68f8      	ldr	r0, [r7, #12]
- 8003fe6:	f7ff ffc7 	bl	8003f78 <mpu6050GetPwrMode>
- 8003fea:	4603      	mov	r3, r0
- 8003fec:	f043 0340 	orr.w	r3, r3, #64	; 0x40
- 8003ff0:	b2db      	uxtb	r3, r3
- 8003ff2:	75fb      	strb	r3, [r7, #23]
+		pwrMode = mpu6050GetPwrMode(mpu6050Device) | 0x40;
+ 8003fd4:	6878      	ldr	r0, [r7, #4]
+ 8003fd6:	f7ff ffca 	bl	8003f6e <mpu6050GetPwrMode>
+ 8003fda:	4603      	mov	r3, r0
+ 8003fdc:	f043 0340 	orr.w	r3, r3, #64	; 0x40
+ 8003fe0:	b2db      	uxtb	r3, r3
+ 8003fe2:	73fb      	strb	r3, [r7, #15]
 	}
 
-	HAL_I2C_Mem_Write(hi2c, mpu6050Device->address, mpu6050Reg.pwrMgmt1, sizeof(mpu6050Reg.pwrMgmt1), &pwrMode, sizeof(pwrMode), timeoutI2C);
- 8003ff4:	68bb      	ldr	r3, [r7, #8]
- 8003ff6:	781b      	ldrb	r3, [r3, #0]
- 8003ff8:	b299      	uxth	r1, r3
- 8003ffa:	236b      	movs	r3, #107	; 0x6b
- 8003ffc:	b29a      	uxth	r2, r3
- 8003ffe:	2364      	movs	r3, #100	; 0x64
- 8004000:	9302      	str	r3, [sp, #8]
- 8004002:	2301      	movs	r3, #1
- 8004004:	9301      	str	r3, [sp, #4]
- 8004006:	f107 0317 	add.w	r3, r7, #23
- 800400a:	9300      	str	r3, [sp, #0]
- 800400c:	2301      	movs	r3, #1
- 800400e:	68f8      	ldr	r0, [r7, #12]
- 8004010:	f7fd f9aa 	bl	8001368 <HAL_I2C_Mem_Write>
+	HAL_I2C_Mem_Write(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.pwrMgmt1, sizeof(mpu6050Reg.pwrMgmt1), &pwrMode, sizeof(pwrMode), timeoutI2C);
+ 8003fe4:	687b      	ldr	r3, [r7, #4]
+ 8003fe6:	6818      	ldr	r0, [r3, #0]
+ 8003fe8:	687b      	ldr	r3, [r7, #4]
+ 8003fea:	791b      	ldrb	r3, [r3, #4]
+ 8003fec:	b299      	uxth	r1, r3
+ 8003fee:	236b      	movs	r3, #107	; 0x6b
+ 8003ff0:	b29a      	uxth	r2, r3
+ 8003ff2:	2364      	movs	r3, #100	; 0x64
+ 8003ff4:	9302      	str	r3, [sp, #8]
+ 8003ff6:	2301      	movs	r3, #1
+ 8003ff8:	9301      	str	r3, [sp, #4]
+ 8003ffa:	f107 030f 	add.w	r3, r7, #15
+ 8003ffe:	9300      	str	r3, [sp, #0]
+ 8004000:	2301      	movs	r3, #1
+ 8004002:	f7fd f9b1 	bl	8001368 <HAL_I2C_Mem_Write>
 
-	if (mpu6050GetPwrMode(hi2c, mpu6050Device) != pwrMode)
- 8004014:	68b9      	ldr	r1, [r7, #8]
- 8004016:	68f8      	ldr	r0, [r7, #12]
- 8004018:	f7ff ffae 	bl	8003f78 <mpu6050GetPwrMode>
- 800401c:	4603      	mov	r3, r0
- 800401e:	461a      	mov	r2, r3
- 8004020:	7dfb      	ldrb	r3, [r7, #23]
- 8004022:	429a      	cmp	r2, r3
- 8004024:	d001      	beq.n	800402a <mpu6050SetPwrMode+0x7a>
+	if (mpu6050GetPwrMode(mpu6050Device) != pwrMode)
+ 8004006:	6878      	ldr	r0, [r7, #4]
+ 8004008:	f7ff ffb1 	bl	8003f6e <mpu6050GetPwrMode>
+ 800400c:	4603      	mov	r3, r0
+ 800400e:	461a      	mov	r2, r3
+ 8004010:	7bfb      	ldrb	r3, [r7, #15]
+ 8004012:	429a      	cmp	r2, r3
+ 8004014:	d001      	beq.n	800401a <mpu6050SetPwrMode+0x74>
 	{
 		return NOK;
- 8004026:	2300      	movs	r3, #0
- 8004028:	e000      	b.n	800402c <mpu6050SetPwrMode+0x7c>
+ 8004016:	2300      	movs	r3, #0
+ 8004018:	e000      	b.n	800401c <mpu6050SetPwrMode+0x76>
 	}
 
 	return OK;
- 800402a:	2301      	movs	r3, #1
+ 800401a:	2301      	movs	r3, #1
 }
- 800402c:	4618      	mov	r0, r3
- 800402e:	3718      	adds	r7, #24
- 8004030:	46bd      	mov	sp, r7
- 8004032:	bd80      	pop	{r7, pc}
+ 800401c:	4618      	mov	r0, r3
+ 800401e:	3710      	adds	r7, #16
+ 8004020:	46bd      	mov	sp, r7
+ 8004022:	bd80      	pop	{r7, pc}
 
-08004034 <__libc_init_array>:
- 8004034:	b570      	push	{r4, r5, r6, lr}
- 8004036:	4d0d      	ldr	r5, [pc, #52]	; (800406c <__libc_init_array+0x38>)
- 8004038:	4c0d      	ldr	r4, [pc, #52]	; (8004070 <__libc_init_array+0x3c>)
- 800403a:	1b64      	subs	r4, r4, r5
- 800403c:	10a4      	asrs	r4, r4, #2
- 800403e:	2600      	movs	r6, #0
- 8004040:	42a6      	cmp	r6, r4
- 8004042:	d109      	bne.n	8004058 <__libc_init_array+0x24>
- 8004044:	4d0b      	ldr	r5, [pc, #44]	; (8004074 <__libc_init_array+0x40>)
- 8004046:	4c0c      	ldr	r4, [pc, #48]	; (8004078 <__libc_init_array+0x44>)
- 8004048:	f000 f820 	bl	800408c <_init>
- 800404c:	1b64      	subs	r4, r4, r5
- 800404e:	10a4      	asrs	r4, r4, #2
- 8004050:	2600      	movs	r6, #0
- 8004052:	42a6      	cmp	r6, r4
- 8004054:	d105      	bne.n	8004062 <__libc_init_array+0x2e>
- 8004056:	bd70      	pop	{r4, r5, r6, pc}
- 8004058:	f855 3b04 	ldr.w	r3, [r5], #4
- 800405c:	4798      	blx	r3
- 800405e:	3601      	adds	r6, #1
- 8004060:	e7ee      	b.n	8004040 <__libc_init_array+0xc>
- 8004062:	f855 3b04 	ldr.w	r3, [r5], #4
- 8004066:	4798      	blx	r3
- 8004068:	3601      	adds	r6, #1
- 800406a:	e7f2      	b.n	8004052 <__libc_init_array+0x1e>
- 800406c:	080040d4 	.word	0x080040d4
- 8004070:	080040d4 	.word	0x080040d4
- 8004074:	080040d4 	.word	0x080040d4
- 8004078:	080040d8 	.word	0x080040d8
+08004024 <__libc_init_array>:
+ 8004024:	b570      	push	{r4, r5, r6, lr}
+ 8004026:	4d0d      	ldr	r5, [pc, #52]	; (800405c <__libc_init_array+0x38>)
+ 8004028:	4c0d      	ldr	r4, [pc, #52]	; (8004060 <__libc_init_array+0x3c>)
+ 800402a:	1b64      	subs	r4, r4, r5
+ 800402c:	10a4      	asrs	r4, r4, #2
+ 800402e:	2600      	movs	r6, #0
+ 8004030:	42a6      	cmp	r6, r4
+ 8004032:	d109      	bne.n	8004048 <__libc_init_array+0x24>
+ 8004034:	4d0b      	ldr	r5, [pc, #44]	; (8004064 <__libc_init_array+0x40>)
+ 8004036:	4c0c      	ldr	r4, [pc, #48]	; (8004068 <__libc_init_array+0x44>)
+ 8004038:	f000 f820 	bl	800407c <_init>
+ 800403c:	1b64      	subs	r4, r4, r5
+ 800403e:	10a4      	asrs	r4, r4, #2
+ 8004040:	2600      	movs	r6, #0
+ 8004042:	42a6      	cmp	r6, r4
+ 8004044:	d105      	bne.n	8004052 <__libc_init_array+0x2e>
+ 8004046:	bd70      	pop	{r4, r5, r6, pc}
+ 8004048:	f855 3b04 	ldr.w	r3, [r5], #4
+ 800404c:	4798      	blx	r3
+ 800404e:	3601      	adds	r6, #1
+ 8004050:	e7ee      	b.n	8004030 <__libc_init_array+0xc>
+ 8004052:	f855 3b04 	ldr.w	r3, [r5], #4
+ 8004056:	4798      	blx	r3
+ 8004058:	3601      	adds	r6, #1
+ 800405a:	e7f2      	b.n	8004042 <__libc_init_array+0x1e>
+ 800405c:	080040c4 	.word	0x080040c4
+ 8004060:	080040c4 	.word	0x080040c4
+ 8004064:	080040c4 	.word	0x080040c4
+ 8004068:	080040c8 	.word	0x080040c8
 
-0800407c <memset>:
- 800407c:	4402      	add	r2, r0
- 800407e:	4603      	mov	r3, r0
- 8004080:	4293      	cmp	r3, r2
- 8004082:	d100      	bne.n	8004086 <memset+0xa>
- 8004084:	4770      	bx	lr
- 8004086:	f803 1b01 	strb.w	r1, [r3], #1
- 800408a:	e7f9      	b.n	8004080 <memset+0x4>
+0800406c <memset>:
+ 800406c:	4402      	add	r2, r0
+ 800406e:	4603      	mov	r3, r0
+ 8004070:	4293      	cmp	r3, r2
+ 8004072:	d100      	bne.n	8004076 <memset+0xa>
+ 8004074:	4770      	bx	lr
+ 8004076:	f803 1b01 	strb.w	r1, [r3], #1
+ 800407a:	e7f9      	b.n	8004070 <memset+0x4>
 
-0800408c <_init>:
- 800408c:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 800408e:	bf00      	nop
- 8004090:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 8004092:	bc08      	pop	{r3}
- 8004094:	469e      	mov	lr, r3
- 8004096:	4770      	bx	lr
+0800407c <_init>:
+ 800407c:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 800407e:	bf00      	nop
+ 8004080:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8004082:	bc08      	pop	{r3}
+ 8004084:	469e      	mov	lr, r3
+ 8004086:	4770      	bx	lr
 
-08004098 <_fini>:
- 8004098:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 800409a:	bf00      	nop
- 800409c:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 800409e:	bc08      	pop	{r3}
- 80040a0:	469e      	mov	lr, r3
- 80040a2:	4770      	bx	lr
+08004088 <_fini>:
+ 8004088:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 800408a:	bf00      	nop
+ 800408c:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 800408e:	bc08      	pop	{r3}
+ 8004090:	469e      	mov	lr, r3
+ 8004092:	4770      	bx	lr
