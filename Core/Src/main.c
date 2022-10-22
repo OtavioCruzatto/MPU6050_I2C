@@ -49,7 +49,7 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 Mpu6050DeviceData mpu6050Device;
-Status mpu6050CommStatus = NOK;
+Status mpu6050InitStatus = NOK;
 char message[40] = "";
 uint8_t counterTimer1 = 0;
 uint8_t counterTimer2 = 0;
@@ -121,7 +121,7 @@ int main(void)
   MX_TIM9_Init();
   /* USER CODE BEGIN 2 */
 
-  mpu6050CommStatus = mpu6050Init(&hi2c1, &mpu6050Device);
+  mpu6050InitStatus = mpu6050Init(&hi2c1, &mpu6050Device);
   HAL_TIM_Base_Start_IT(&htim9);
 
   /* USER CODE END 2 */
@@ -136,14 +136,14 @@ int main(void)
 
 	  if (counterTimer1 >= delay500ms)
 	  {
-		  if (mpu6050CommStatus == OK)
+		  if (mpu6050InitStatus == OK)
 		  {
-			  HAL_UART_Transmit(&huart2, "OK\n\r", 5, timeoutUart);
+			  HAL_UART_Transmit(&huart2, (uint8_t *) "OK\n\r", 5, timeoutUart);
 		  }
 		  else
 		  {
-			  HAL_UART_Transmit(&huart2, "NOK\n\r", 6, timeoutUart);
-			  mpu6050CommStatus = mpu6050Init(&hi2c1, &mpu6050Device);
+			  HAL_UART_Transmit(&huart2, (uint8_t *) "NOK\n\r", 6, timeoutUart);
+			  mpu6050InitStatus = mpu6050Init(&hi2c1, &mpu6050Device);
 		  }
 		  counterTimer1 = 0;
 	  }

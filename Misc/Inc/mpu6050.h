@@ -100,6 +100,7 @@ typedef struct
 	uint8_t whoAmI;
 	uint8_t accelTest[3];
 	uint8_t gyroTest[3];
+	uint16_t sampleRate;
 } Mpu6050DeviceData;
 
 typedef enum STATUS
@@ -154,6 +155,8 @@ Status mpu6050SetConfig(Mpu6050DeviceData *mpu6050Device, ExternalSyncSet extern
 uint8_t mpu6050GetConfig(Mpu6050DeviceData *mpu6050Device);
 Status mpu6050SetPwrMode(Mpu6050DeviceData *mpu6050Device, PowerMode powerMode);
 uint8_t mpu6050GetPwrMode(Mpu6050DeviceData *mpu6050Device);
+uint16_t mpu6050GetSampleRate(Mpu6050DeviceData *mpu6050Device);
+Status mpu6050SetSampleRate(Mpu6050DeviceData *mpu6050Device, uint16_t sampleRate);
 
 
 

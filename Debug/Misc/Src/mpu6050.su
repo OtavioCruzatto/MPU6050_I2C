@@ -1,8 +1,10 @@
 ../Misc/Src/mpu6050.c:94:8:mpu6050Init	24	static
-../Misc/Src/mpu6050.c:125:8:mpu6050CheckCommunication	24	static
-../Misc/Src/mpu6050.c:136:9:mpu6050WhoAmI	40	static
-../Misc/Src/mpu6050.c:143:6:mpu6050GetAccelAndGyroSelfTestParams	48	static
-../Misc/Src/mpu6050.c:159:9:mpu6050GetConfig	40	static
-../Misc/Src/mpu6050.c:166:8:mpu6050SetConfig	40	static
-../Misc/Src/mpu6050.c:180:9:mpu6050GetPwrMode	40	static
-../Misc/Src/mpu6050.c:187:8:mpu6050SetPwrMode	40	static
+../Misc/Src/mpu6050.c:137:8:mpu6050CheckCommunication	24	static
+../Misc/Src/mpu6050.c:148:9:mpu6050WhoAmI	40	static
+../Misc/Src/mpu6050.c:155:6:mpu6050GetAccelAndGyroSelfTestParams	48	static
+../Misc/Src/mpu6050.c:171:9:mpu6050GetConfig	40	static
+../Misc/Src/mpu6050.c:178:8:mpu6050SetConfig	40	static
+../Misc/Src/mpu6050.c:192:9:mpu6050GetPwrMode	40	static
+../Misc/Src/mpu6050.c:199:8:mpu6050SetPwrMode	40	static
+../Misc/Src/mpu6050.c:222:10:mpu6050GetSampleRate	40	static
+../Misc/Src/mpu6050.c:245:8:mpu6050SetSampleRate	40	static

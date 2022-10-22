@@ -93,14 +93,12 @@ static const Mpu6050Reg mpu6050Reg =
 
 Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 {
-	Status communicationStatus = NOK;
-
 	mpu6050Device->i2cHandler	= hi2c;
 	mpu6050Device->address		= 0x68 << 1;
 	mpu6050Device->whoAmI		= 0x68;
+	mpu6050Device->sampleRate	= 0x0000;
 
-	uint8_t cont = 0;
-	for (cont = 0; cont < 3; cont++)
+	for (uint8_t cont = 0; cont < 3; cont++)
 	{
 		mpu6050Device->accelTest[cont] = 0x00;
 		mpu6050Device->gyroTest[cont] = 0x00;
@@ -111,15 +109,29 @@ Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 		return NOK;
 	}
 
-	if (mpu6050WhoAmI(mpu6050Device) == mpu6050Device->whoAmI)
+	if (mpu6050WhoAmI(mpu6050Device) != mpu6050Device->whoAmI)
 	{
-		mpu6050SetPwrMode(mpu6050Device, NORMAL);
-		mpu6050GetAccelAndGyroSelfTestParams(mpu6050Device);
-		mpu6050SetConfig(mpu6050Device, DISABLED, DLPF_ACCEL_1KHZ_260HZ_GYRO_8KHZ_256HZ);
-		communicationStatus = OK;
+		return NOK;
 	}
 
-	return communicationStatus;
+	if (mpu6050SetPwrMode(mpu6050Device, NORMAL) == NOK)
+	{
+		return NOK;
+	}
+
+	if (mpu6050SetConfig(mpu6050Device, DISABLED, DLPF_ACCEL_1KHZ_184HZ_GYRO_1KHZ_188HZ) == NOK)
+	{
+		return NOK;
+	}
+
+	if (mpu6050SetSampleRate(mpu6050Device, 1000) == NOK)
+	{
+		return NOK;
+	}
+
+	mpu6050GetAccelAndGyroSelfTestParams(mpu6050Device);
+
+	return OK;
 }
 
 Status mpu6050CheckCommunication(Mpu6050DeviceData *mpu6050Device)
@@ -200,6 +212,64 @@ Status mpu6050SetPwrMode(Mpu6050DeviceData *mpu6050Device, PowerMode powerMode)
 	HAL_I2C_Mem_Write(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.pwrMgmt1, sizeof(mpu6050Reg.pwrMgmt1), &pwrMode, sizeof(pwrMode), timeoutI2C);
 
 	if (mpu6050GetPwrMode(mpu6050Device) != pwrMode)
+	{
+		return NOK;
+	}
+
+	return OK;
+}
+
+uint16_t mpu6050GetSampleRate(Mpu6050DeviceData *mpu6050Device)
+{
+	uint16_t sampleRate = 0;
+	uint8_t smplrtDiv = 0;
+	uint8_t config = mpu6050GetConfig(mpu6050Device);
+	uint8_t dlpfCfg = config & 0x07;
+
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.smplrtDiv, sizeof(mpu6050Reg.smplrtDiv), &smplrtDiv, 1, timeoutI2C);
+
+	if ((dlpfCfg == DLPF_ACCEL_1KHZ_260HZ_GYRO_8KHZ_256HZ) || (dlpfCfg == DLPF_ACCEL_1KHZ_RES_GYRO_8KHZ_RES))
+	{
+		sampleRate = 8000 / (1 + smplrtDiv);
+	}
+	else
+	{
+		sampleRate = 1000 / (1 + smplrtDiv);
+	}
+
+	mpu6050Device->sampleRate = sampleRate;
+
+	return sampleRate;
+}
+
+Status mpu6050SetSampleRate(Mpu6050DeviceData *mpu6050Device, uint16_t sampleRate)
+{
+	uint8_t config = mpu6050GetConfig(mpu6050Device);
+	uint8_t dlpfCfg = config & 0x07;
+	uint8_t smplrtDiv = 0;
+
+	if (sampleRate > 8000)
+	{
+		return NOK;
+	}
+
+	if ((dlpfCfg != DLPF_ACCEL_1KHZ_260HZ_GYRO_8KHZ_256HZ) || (dlpfCfg != DLPF_ACCEL_1KHZ_RES_GYRO_8KHZ_RES))
+	{
+		if (sampleRate > 1000)
+		{
+			return NOK;
+		}
+
+		smplrtDiv = (1000 / sampleRate) - 1;
+	}
+	else
+	{
+		smplrtDiv = (8000 / sampleRate) - 1;
+	}
+
+	HAL_I2C_Mem_Write(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.smplrtDiv, sizeof(mpu6050Reg.smplrtDiv), &smplrtDiv, sizeof(smplrtDiv), timeoutI2C);
+
+	if (mpu6050GetSampleRate(mpu6050Device) != sampleRate)
 	{
 		return NOK;
 	}
