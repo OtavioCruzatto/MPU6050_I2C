@@ -147,6 +147,22 @@ typedef enum POWER_MODE
 	SLEEP
 } PowerMode;
 
+typedef enum GYRO_FULL_SCALE_RANGE
+{
+	PLUS_MINUS_250_DEGREE_PER_SECOND	= 0x00,
+	PLUS_MINUS_500_DEGREE_PER_SECOND,
+	PLUS_MINUS_1000_DEGREE_PER_SECOND,
+	PLUS_MINUS_2000_DEGREE_PER_SECOND
+} GyroFullScaleRange;
+
+typedef enum ACCEL_FULL_SCALE_RANGE
+{
+	PLUS_MINUS_2_G	= 0x00,
+	PLUS_MINUS_4_G,
+	PLUS_MINUS_8_G,
+	PLUS_MINUS_16_G
+} AccelFullScaleRange;
+
 Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device);
 Status mpu6050CheckCommunication(Mpu6050DeviceData *mpu6050Device);
 uint8_t mpu6050WhoAmI(Mpu6050DeviceData *mpu6050Device);
@@ -157,7 +173,10 @@ Status mpu6050SetPwrMode(Mpu6050DeviceData *mpu6050Device, PowerMode powerMode);
 uint8_t mpu6050GetPwrMode(Mpu6050DeviceData *mpu6050Device);
 uint16_t mpu6050GetSampleRate(Mpu6050DeviceData *mpu6050Device);
 Status mpu6050SetSampleRate(Mpu6050DeviceData *mpu6050Device, uint16_t sampleRate);
-
+uint8_t mpu6050GetGyroFullScaleConfig(Mpu6050DeviceData *mpu6050Device);
+Status mpu6050SetGyroFullScaleConfig(Mpu6050DeviceData *mpu6050Device, GyroFullScaleRange gyroFullScaleRange);
+uint8_t mpu6050GetAccelFullScaleConfig(Mpu6050DeviceData *mpu6050Device);
+Status mpu6050SetAccelFullScaleConfig(Mpu6050DeviceData *mpu6050Device, AccelFullScaleRange accelFullScaleRange);
 
 
 #endif /* INC_MPU6050_H_ */

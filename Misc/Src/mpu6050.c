@@ -129,6 +129,16 @@ Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 		return NOK;
 	}
 
+	if (mpu6050SetGyroFullScaleConfig(mpu6050Device, PLUS_MINUS_500_DEGREE_PER_SECOND) == NOK)
+	{
+		return NOK;
+	}
+
+	if (mpu6050SetAccelFullScaleConfig(mpu6050Device, PLUS_MINUS_8_G) == NOK)
+	{
+		return NOK;
+	}
+
 	mpu6050GetAccelAndGyroSelfTestParams(mpu6050Device);
 
 	return OK;
@@ -171,7 +181,7 @@ void mpu6050GetAccelAndGyroSelfTestParams(Mpu6050DeviceData *mpu6050Device)
 uint8_t mpu6050GetConfig(Mpu6050DeviceData *mpu6050Device)
 {
 	uint8_t config = 0;
-	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.config, sizeof(mpu6050Reg.config), &config, 1, timeoutI2C);
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.config, sizeof(mpu6050Reg.config), &config, sizeof(config), timeoutI2C);
 	return config;
 }
 
@@ -226,7 +236,7 @@ uint16_t mpu6050GetSampleRate(Mpu6050DeviceData *mpu6050Device)
 	uint8_t config = mpu6050GetConfig(mpu6050Device);
 	uint8_t dlpfCfg = config & 0x07;
 
-	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.smplrtDiv, sizeof(mpu6050Reg.smplrtDiv), &smplrtDiv, 1, timeoutI2C);
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.smplrtDiv, sizeof(mpu6050Reg.smplrtDiv), &smplrtDiv, sizeof(smplrtDiv), timeoutI2C);
 
 	if ((dlpfCfg == DLPF_ACCEL_1KHZ_260HZ_GYRO_8KHZ_256HZ) || (dlpfCfg == DLPF_ACCEL_1KHZ_RES_GYRO_8KHZ_RES))
 	{
@@ -276,3 +286,61 @@ Status mpu6050SetSampleRate(Mpu6050DeviceData *mpu6050Device, uint16_t sampleRat
 
 	return OK;
 }
+
+uint8_t mpu6050GetGyroFullScaleConfig(Mpu6050DeviceData *mpu6050Device)
+{
+	uint8_t fullScaleConfig = 0xAA;
+	uint8_t fs_sel = 0;
+
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.gyroConfig, sizeof(mpu6050Reg.gyroConfig), &fs_sel, sizeof(fs_sel), timeoutI2C);
+
+	fullScaleConfig = (fs_sel & 0x18) >> 3;
+
+	return fullScaleConfig;
+}
+
+Status mpu6050SetGyroFullScaleConfig(Mpu6050DeviceData *mpu6050Device, GyroFullScaleRange gyroFullScaleRange)
+{
+	uint8_t fs_sel = gyroFullScaleRange << 3;
+
+	HAL_I2C_Mem_Write(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.gyroConfig, sizeof(mpu6050Reg.gyroConfig), &fs_sel, sizeof(fs_sel), timeoutI2C);
+
+	if (mpu6050GetGyroFullScaleConfig(mpu6050Device) != gyroFullScaleRange)
+	{
+		return NOK;
+	}
+
+	return OK;
+}
+
+uint8_t mpu6050GetAccelFullScaleConfig(Mpu6050DeviceData *mpu6050Device)
+{
+	uint8_t fullScaleConfig = 0xAA;
+	uint8_t afs_sel = 0;
+
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.accelConfig, sizeof(mpu6050Reg.accelConfig), &afs_sel, sizeof(afs_sel), timeoutI2C);
+
+	fullScaleConfig = (afs_sel & 0x18) >> 3;
+
+	return fullScaleConfig;
+}
+
+Status mpu6050SetAccelFullScaleConfig(Mpu6050DeviceData *mpu6050Device, AccelFullScaleRange accelFullScaleRange)
+{
+	uint8_t afs_sel = accelFullScaleRange << 3;
+
+	HAL_I2C_Mem_Write(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.accelConfig, sizeof(mpu6050Reg.accelConfig), &afs_sel, sizeof(afs_sel), timeoutI2C);
+
+	if (mpu6050GetAccelFullScaleConfig(mpu6050Device) != accelFullScaleRange)
+	{
+		return NOK;
+	}
+
+	return OK;
+}
+
+
+
+
+
+
