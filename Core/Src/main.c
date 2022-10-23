@@ -50,7 +50,7 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 Mpu6050DeviceData mpu6050Device;
 Status mpu6050InitStatus = NOK;
-char message[40] = "";
+uint8_t message[40] = "";
 uint8_t counterTimer1 = 0;
 uint8_t counterTimer2 = 0;
 
@@ -138,7 +138,16 @@ int main(void)
 	  {
 		  if (mpu6050InitStatus == OK)
 		  {
-			  HAL_UART_Transmit(&huart2, (uint8_t *) "OK\n\r", 5, timeoutUart);
+			  mpu6050GetAccel(&mpu6050Device);
+
+			  sprintf((char *) message, "X axis = %f\r\n", mpu6050Device.accel[X_AXIS]);
+			  HAL_UART_Transmit(&huart2, message, strlen((char *) message), timeoutUart);
+
+			  sprintf((char *) message, "Y axis = %f\r\n", mpu6050Device.accel[Y_AXIS]);
+			  HAL_UART_Transmit(&huart2, message, strlen((char *) message), timeoutUart);
+
+			  sprintf((char *) message, "Z axis = %f\r\n\r\n", mpu6050Device.accel[Z_AXIS]);
+			  HAL_UART_Transmit(&huart2, message, strlen((char *) message), timeoutUart);
 		  }
 		  else
 		  {

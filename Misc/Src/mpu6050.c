@@ -16,34 +16,10 @@ static const Mpu6050Reg mpu6050Reg =
 	.gyroConfig 	 = 0x1B,
 	.accelConfig 	 = 0x1C,
 	.fifoEn 		 = 0x23,
-	.i2cMstCtrl 	 = 0x24,
-	.i2cSlv0Addr 	 = 0x25,
-	.i2cSlv0Reg 	 = 0x26,
-	.i2cSlv0Ctrl 	 = 0x27,
-	.i2cSlv1Addr 	 = 0x28,
-	.i2cSlv1Reg 	 = 0x29,
-	.i2cSlv1Ctrl 	 = 0x2A,
-	.i2cSlv2Addr 	 = 0x2B,
-	.i2cSlv2Reg 	 = 0x2C,
-	.i2cSlv2Ctrl 	 = 0x2D,
-	.i2cSlv3Addr 	 = 0x2E,
-	.i2cSlv3Reg 	 = 0x2F,
-	.i2cSlv3Ctrl 	 = 0x30,
-	.i2cSlv4Addr 	 = 0x31,
-	.i2cSlv4Reg 	 = 0x32,
-	.i2cSlv4Do 		 = 0x33,
-	.i2cSlv4Ctrl 	 = 0x34,
-	.i2cSlv4Di 		 = 0x35,
-	.i2cMstStatus 	 = 0x36,
 	.intPinCfg 		 = 0x37,
 	.intEnable 		 = 0x38,
 	.intStatus 		 = 0x3A,
-	.accelXoutH 	 = 0x3B,
-	.accelXoutL 	 = 0x3C,
-	.accelYoutH 	 = 0x3D,
-	.accelYoutL 	 = 0x3E,
-	.accelZoutH 	 = 0x3F,
-	.accelZoutL 	 = 0x40,
+	.accelOutXYZ 	 = 0x3B,
 	.tempOutH 		 = 0x41,
 	.tempOutL 		 = 0x42,
 	.gyroXoutH 		 = 0x43,
@@ -52,35 +28,6 @@ static const Mpu6050Reg mpu6050Reg =
 	.gyroYoutL 		 = 0x46,
 	.gyroZoutH 		 = 0x47,
 	.gyroZoutL 		 = 0x48,
-	.extSensData00 	 = 0x49,
-	.extSensData01 	 = 0x4A,
-	.extSensData02 	 = 0x4B,
-	.extSensData03 	 = 0x4C,
-	.extSensData04 	 = 0x4D,
-	.extSensData05 	 = 0x4E,
-	.extSensData06 	 = 0x4F,
-	.extSensData07 	 = 0x50,
-	.extSensData08 	 = 0x51,
-	.extSensData09 	 = 0x52,
-	.extSensData10 	 = 0x53,
-	.extSensData11 	 = 0x54,
-	.extSensData12   = 0x55,
-	.extSensData13 	 = 0x56,
-	.extSensData14 	 = 0x57,
-	.extSensData15 	 = 0x58,
-	.extSensData16 	 = 0x59,
-	.extSensData17 	 = 0x5A,
-	.extSensData18 	 = 0x5B,
-	.extSensData19	 = 0x5C,
-	.extSensData20 	 = 0x5D,
-	.extSensData21 	 = 0x5E,
-	.extSensData22 	 = 0x5F,
-	.extSensData23 	 = 0x60,
-	.i2cSlv0Do 	   	 = 0x63,
-	.i2cSlv1Do 	   	 = 0x64,
-	.i2cSlv2Do		 = 0x65,
-	.i2cSlv3Do		 = 0x66,
-	.i2cMstDelayCtrl = 0x67,
 	.signalPathReset = 0x68,
 	.userCtrl		 = 0x6A,
 	.pwrMgmt1		 = 0x6B,
@@ -93,15 +40,17 @@ static const Mpu6050Reg mpu6050Reg =
 
 Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 {
-	mpu6050Device->i2cHandler	= hi2c;
-	mpu6050Device->address		= 0x68 << 1;
-	mpu6050Device->whoAmI		= 0x68;
-	mpu6050Device->sampleRate	= 0x0000;
+	mpu6050Device->i2cHandler		= hi2c;
+	mpu6050Device->address			= 0x68 << 1;
+	mpu6050Device->whoAmI			= 0x68;
+	mpu6050Device->sampleRate		= 0x0000;
+	mpu6050Device->accelSensitivity	= 0x00;
 
 	for (uint8_t cont = 0; cont < 3; cont++)
 	{
 		mpu6050Device->accelTest[cont] = 0x00;
 		mpu6050Device->gyroTest[cont] = 0x00;
+		mpu6050Device->accel[cont] = 0x00;
 	}
 
 	if (mpu6050CheckCommunication(mpu6050Device) == NOK)
@@ -134,7 +83,7 @@ Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 		return NOK;
 	}
 
-	if (mpu6050SetAccelFullScaleConfig(mpu6050Device, PLUS_MINUS_8_G) == NOK)
+	if (mpu6050SetAccelFullScaleConfig(mpu6050Device, PLUS_MINUS_2_G) == NOK)
 	{
 		return NOK;
 	}
@@ -336,7 +285,49 @@ Status mpu6050SetAccelFullScaleConfig(Mpu6050DeviceData *mpu6050Device, AccelFul
 		return NOK;
 	}
 
+	mpu6050SetAccelSensivity(mpu6050Device, accelFullScaleRange);
 	return OK;
+}
+
+void mpu6050SetAccelSensivity(Mpu6050DeviceData *mpu6050Device, AccelFullScaleRange accelFullScaleRange)
+{
+	switch (accelFullScaleRange)
+	{
+		case PLUS_MINUS_2_G:
+			mpu6050Device->accelSensitivity = 16384;
+			break;
+
+		case PLUS_MINUS_4_G:
+			mpu6050Device->accelSensitivity = 8192;
+			break;
+
+		case PLUS_MINUS_8_G:
+			mpu6050Device->accelSensitivity = 4096;
+			break;
+
+		case PLUS_MINUS_16_G:
+			mpu6050Device->accelSensitivity = 2048;
+			break;
+
+		default:
+			break;
+	}
+}
+
+void mpu6050GetAccel(Mpu6050DeviceData *mpu6050Device)
+{
+	uint8_t qtyBytes = 6;
+	uint8_t accelBytesXYZ[6] = {0, 0, 0, 0, 0, 0};
+
+	HAL_I2C_Mem_Read(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.accelOutXYZ, sizeof(mpu6050Reg.accelOutXYZ), accelBytesXYZ, qtyBytes, timeoutI2C);
+
+	int16_t accel_x_axis = ((accelBytesXYZ[0] << 8) | accelBytesXYZ[1]);
+	int16_t accel_y_axis = ((accelBytesXYZ[2] << 8) | accelBytesXYZ[3]);
+	int16_t accel_z_axis = ((accelBytesXYZ[4] << 8) | accelBytesXYZ[5]);
+
+	mpu6050Device->accel[X_AXIS] = accel_x_axis / ((float) mpu6050Device->accelSensitivity);
+	mpu6050Device->accel[Y_AXIS] = accel_y_axis / ((float) mpu6050Device->accelSensitivity);
+	mpu6050Device->accel[Z_AXIS] = accel_z_axis / ((float) mpu6050Device->accelSensitivity);
 }
 
 
