@@ -121,6 +121,7 @@ int main(void)
   MX_TIM9_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_Delay(2500);
   mpu6050InitStatus = mpu6050Init(&hi2c1, &mpu6050Device);
   HAL_TIM_Base_Start_IT(&htim9);
 
@@ -140,13 +141,13 @@ int main(void)
 		  {
 			  mpu6050GetAccel(&mpu6050Device);
 
-			  sprintf((char *) message, "X axis = %f\r\n", mpu6050Device.accel[X_AXIS]);
+			  sprintf((char *) message, "Accel: X = %.2fg\r\n", mpu6050Device.accel[X_AXIS]);
 			  HAL_UART_Transmit(&huart2, message, strlen((char *) message), timeoutUart);
 
-			  sprintf((char *) message, "Y axis = %f\r\n", mpu6050Device.accel[Y_AXIS]);
+			  sprintf((char *) message, "Accel: Y = %.2fg\r\n", mpu6050Device.accel[Y_AXIS]);
 			  HAL_UART_Transmit(&huart2, message, strlen((char *) message), timeoutUart);
 
-			  sprintf((char *) message, "Z axis = %f\r\n\r\n", mpu6050Device.accel[Z_AXIS]);
+			  sprintf((char *) message, "Accel: Z = %.2fg\r\n\r\n", mpu6050Device.accel[Z_AXIS]);
 			  HAL_UART_Transmit(&huart2, message, strlen((char *) message), timeoutUart);
 		  }
 		  else

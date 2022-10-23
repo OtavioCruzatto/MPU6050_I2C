@@ -128,5 +128,10 @@ uint8_t mpu6050GetAccelFullScaleConfig(Mpu6050DeviceData *mpu6050Device);
 Status mpu6050SetAccelFullScaleConfig(Mpu6050DeviceData *mpu6050Device, AccelFullScaleRange accelFullScaleRange);
 void mpu6050SetAccelSensivity(Mpu6050DeviceData *mpu6050Device, AccelFullScaleRange accelFullScaleRange);
 void mpu6050GetAccel(Mpu6050DeviceData *mpu6050Device);
+Status mpu6050AccelSelfTest(Mpu6050DeviceData *mpu6050Device);
+void mpu6050CalculatesAccelFactoryTrim(Mpu6050DeviceData *mpu6050Device, float accelFactoryTrim[3]);
+void mpu6050EnablesAccelSelfTest(Mpu6050DeviceData *mpu6050Device);
+uint8_t isBetween(float valueToBeTested, float min, float max);
+void mpu6050DisablesAccelSelfTest(Mpu6050DeviceData *mpu6050Device);
 
 #endif /* INC_MPU6050_H_ */

@@ -6,6 +6,7 @@
  */
 
 #include "mpu6050.h"
+#include <math.h>
 
 static const uint32_t timeoutI2C = 100;
 static const Mpu6050Reg mpu6050Reg =
@@ -73,6 +74,11 @@ Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 		return NOK;
 	}
 
+	if (mpu6050AccelSelfTest(mpu6050Device) == NOK)
+	{
+		return NOK;
+	}
+
 	if (mpu6050SetSampleRate(mpu6050Device, 1000) == NOK)
 	{
 		return NOK;
@@ -87,8 +93,6 @@ Status mpu6050Init(I2C_HandleTypeDef *hi2c, Mpu6050DeviceData *mpu6050Device)
 	{
 		return NOK;
 	}
-
-	mpu6050GetAccelAndGyroSelfTestParams(mpu6050Device);
 
 	return OK;
 }
@@ -330,8 +334,95 @@ void mpu6050GetAccel(Mpu6050DeviceData *mpu6050Device)
 	mpu6050Device->accel[Z_AXIS] = accel_z_axis / ((float) mpu6050Device->accelSensitivity);
 }
 
+Status mpu6050AccelSelfTest(Mpu6050DeviceData *mpu6050Device)
+{
+	float accelSelfTestResponse[3] = {0, 0, 0};
+	float accelOutWithSelfTestEnabled[3] = {0, 0, 0};
+	float accelOutWithSelfTestDisabled[3] = {0, 0, 0};
+	float accelFactoryTrim[3] = {0, 0, 0};
+	float changeFromFactoryTrimInPercent[3] = {0, 0, 0};
+	float minChangeFromFactoryTrimAllowedInPercent = -14;
+	float maxChangeFromFactoryTrimAllowedInPercent = 14;
+	uint8_t passSelfTest[3] = {0, 0, 0};
 
+	mpu6050GetAccelAndGyroSelfTestParams(mpu6050Device);
+	mpu6050CalculatesAccelFactoryTrim(mpu6050Device, accelFactoryTrim);
 
+	mpu6050SetAccelFullScaleConfig(mpu6050Device, PLUS_MINUS_8_G);
+	HAL_Delay(250);
+	mpu6050GetAccel(mpu6050Device);
+	accelOutWithSelfTestDisabled[X_AXIS] = mpu6050Device->accel[X_AXIS];
+	accelOutWithSelfTestDisabled[Y_AXIS] = mpu6050Device->accel[Y_AXIS];
+	accelOutWithSelfTestDisabled[Z_AXIS] = mpu6050Device->accel[Z_AXIS];
+
+	mpu6050EnablesAccelSelfTest(mpu6050Device);
+	HAL_Delay(250);
+	mpu6050GetAccel(mpu6050Device);
+	accelOutWithSelfTestEnabled[X_AXIS] = mpu6050Device->accel[X_AXIS];
+	accelOutWithSelfTestEnabled[Y_AXIS] = mpu6050Device->accel[Y_AXIS];
+	accelOutWithSelfTestEnabled[Z_AXIS] = mpu6050Device->accel[Z_AXIS];
+
+	accelSelfTestResponse[X_AXIS] = accelOutWithSelfTestEnabled[X_AXIS] - accelOutWithSelfTestDisabled[X_AXIS];
+	accelSelfTestResponse[Y_AXIS] = accelOutWithSelfTestEnabled[Y_AXIS] - accelOutWithSelfTestDisabled[Y_AXIS];
+	accelSelfTestResponse[Z_AXIS] = accelOutWithSelfTestEnabled[Z_AXIS] - accelOutWithSelfTestDisabled[Z_AXIS];
+
+	changeFromFactoryTrimInPercent[X_AXIS] = 100 + (100 * ((accelSelfTestResponse[X_AXIS] - accelFactoryTrim[X_AXIS]) / accelFactoryTrim[X_AXIS]));
+	changeFromFactoryTrimInPercent[Y_AXIS] = 100 + (100 * ((accelSelfTestResponse[Y_AXIS] - accelFactoryTrim[Y_AXIS]) / accelFactoryTrim[Y_AXIS]));
+	changeFromFactoryTrimInPercent[Z_AXIS] = 100 + (100 * ((accelSelfTestResponse[Z_AXIS] - accelFactoryTrim[Z_AXIS]) / accelFactoryTrim[Z_AXIS]));
+
+	passSelfTest[X_AXIS] = isBetween(changeFromFactoryTrimInPercent[X_AXIS], minChangeFromFactoryTrimAllowedInPercent, maxChangeFromFactoryTrimAllowedInPercent);
+	passSelfTest[Y_AXIS] = isBetween(changeFromFactoryTrimInPercent[Y_AXIS], minChangeFromFactoryTrimAllowedInPercent, maxChangeFromFactoryTrimAllowedInPercent);
+	passSelfTest[Z_AXIS] = isBetween(changeFromFactoryTrimInPercent[Z_AXIS], minChangeFromFactoryTrimAllowedInPercent, maxChangeFromFactoryTrimAllowedInPercent);
+
+	mpu6050DisablesAccelSelfTest(mpu6050Device);
+	HAL_Delay(250);
+
+	if ((passSelfTest[X_AXIS] & passSelfTest[Y_AXIS] & passSelfTest[Z_AXIS]) == NOK)
+	{
+		return NOK;
+	}
+
+	return OK;
+}
+
+void mpu6050CalculatesAccelFactoryTrim(Mpu6050DeviceData *mpu6050Device, float accelFactoryTrim[3])
+{
+	for (uint8_t axis = X_AXIS; axis <= Z_AXIS; axis++)
+	{
+		if (mpu6050Device->accelTest[axis] == 0)
+		{
+			accelFactoryTrim[axis] = 0;
+		}
+		else
+		{
+			accelFactoryTrim[axis] = 4096 * 0.34 * pow((0.92 / 0.34), ((mpu6050Device->accelTest[axis] - 1) / (pow(2, 5) - 2)));
+		}
+	}
+}
+
+void mpu6050EnablesAccelSelfTest(Mpu6050DeviceData *mpu6050Device)
+{
+	uint8_t current_accel_config = mpu6050GetAccelFullScaleConfig(mpu6050Device);
+	uint8_t new_accel_config = current_accel_config | 0xE0;
+	HAL_I2C_Mem_Write(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.accelConfig, sizeof(mpu6050Reg.accelConfig), &new_accel_config, sizeof(new_accel_config), timeoutI2C);
+}
+
+void mpu6050DisablesAccelSelfTest(Mpu6050DeviceData *mpu6050Device)
+{
+	uint8_t current_accel_config = mpu6050GetAccelFullScaleConfig(mpu6050Device);
+	uint8_t new_accel_config = current_accel_config & 0x1F;
+	HAL_I2C_Mem_Write(mpu6050Device->i2cHandler, mpu6050Device->address, mpu6050Reg.accelConfig, sizeof(mpu6050Reg.accelConfig), &new_accel_config, sizeof(new_accel_config), timeoutI2C);
+}
+
+uint8_t isBetween(float valueToBeTested, float min, float max)
+{
+	if (valueToBeTested >= min && valueToBeTested <= max)
+	{
+		return 1;
+	}
+
+	return 0;
+}
 
 
 
